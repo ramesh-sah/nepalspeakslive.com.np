@@ -13,7 +13,12 @@ SECRET_KEY = 'django-insecure-cczl^ckzujb+wj)-25dlz@tql!q0amkb)fgiyv%set3ievm%t-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [ "http://www.nepalspeakslive.com.np",
+    "https://www.nepalspeakslive.com.np",
+    "http://nepalspeakslive.com.np",
+    "https://nepalspeakslive.com.np",
+    "*"
+    ]
 
 
 
@@ -420,15 +425,15 @@ JAZZMIN_UI_TWEAKS = {
 
 
 # === Wikidata Site Info ===
-SITE_NAME = "Mount Everest Summit"
+SITE_NAME = "Nepal Speaks Live"
 SITE_ALTERNATE_NAME = "THE WORLD’S HIGHEST NEWS ROOM"
-SITE_URL = "https://mounteverest-summit.com"
+SITE_URL = "https://www.nepalspeakslive.com.np"
 SITE_LOGO = "https://mounteverest-summit.com/static/images/logo.png"
 SITE_DESCRIPTION = (
     "Mount Everest Summit – news, expeditions & guides covering Mount Everest, "
     "its North and South routes, weather updates and climbing insights."
 )
-SITE_FOUNDING_DATE = "2024"
+SITE_FOUNDING_DATE = "2025"
 
 SOCIAL_LINKS = [
     "https://www.wikidata.org/wiki/Q136698656",
@@ -438,10 +443,12 @@ SOCIAL_LINKS = [
     "https://www.youtube.com/yourchannel",
 ]
 
-SITEMAP_URL = "https://mounteverest-summit.com/sitemap.xml"
+SITEMAP_URL = "https://www.nepalspeakslive.com.np/sitemap.xml"
 CSRF_TRUSTED_ORIGINS = [
-    "https://mounteverest-summit.com",
-    "http://mounteverest-summit.com",
+    "http://www.nepalspeakslive.com.np",
+    "https://www.nepalspeakslive.com.np",
+    "http://nepalspeakslive.com.np",
+    "https://nepalspeakslive.com.np"
 ]
 
 
