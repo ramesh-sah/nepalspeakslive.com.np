@@ -1,0 +1,14 @@
+{
+  "total_articles": 3481,
+  "scraping_time": "2025-10-14 06:07:29",
+  "categories_distribution": {
+    "5": 3169,
+    "6": 139,
+    "1": 103,
+    "4": 19,
+    "2": 51
+  },
+  "everest_articles": 3379,
+  "ai_enhanced_articles": 0,
+  "images_downloaded": 2150
+}

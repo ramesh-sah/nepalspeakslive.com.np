@@ -1,0 +1,31 @@
+id,name,slug,description,created_at,updated_at,category_id,created_by_id
+1,Culture & People,culture-people,Culture & People related content,2025-10-14 06:07:29,2025-10-14 06:07:29,1,1
+2,Accommodation & Food,accommodation-food,Accommodation & Food related content,2025-10-14 06:07:29,2025-10-14 06:07:29,1,1
+3,Travel Tips,travel-tips,Travel Tips related content,2025-10-14 06:07:29,2025-10-14 06:07:29,1,1
+4,Trekking Routes,trekking-routes,Trekking Routes related content,2025-10-14 06:07:29,2025-10-14 06:07:29,1,1
+5,Everest Base Camp Trek,everest-base-camp-trek,Everest Base Camp Trek related content,2025-10-14 06:07:29,2025-10-14 06:07:29,1,1
+6,Tributes & Memorials,tributes-memorials,Tributes & Memorials related content,2025-10-14 06:07:29,2025-10-14 06:07:29,2,1
+7,Documentaries & Books,documentaries-books,Documentaries & Books related content,2025-10-14 06:07:29,2025-10-14 06:07:29,2,1
+8,Records & Firsts,records-firsts,Records & Firsts related content,2025-10-14 06:07:29,2025-10-14 06:07:29,2,1
+9,Famous Climbers,famous-climbers,Famous Climbers related content,2025-10-14 06:07:29,2025-10-14 06:07:29,2,1
+10,Historic Climbs,historic-climbs,Historic Climbs related content,2025-10-14 06:07:29,2025-10-14 06:07:29,2,1
+11,Partnerships & Campaigns,partnerships-campaigns,Partnerships & Campaigns related content,2025-10-14 06:07:29,2025-10-14 06:07:29,3,1
+12,Community Projects,community-projects,Community Projects related content,2025-10-14 06:07:29,2025-10-14 06:07:29,3,1
+13,Wildlife Protection,wildlife-protection,Wildlife Protection related content,2025-10-14 06:07:29,2025-10-14 06:07:29,3,1
+14,Sustainable Climbing,sustainable-climbing,Sustainable Climbing related content,2025-10-14 06:07:29,2025-10-14 06:07:29,3,1
+15,Everest Cleanup,everest-cleanup,Everest Cleanup related content,2025-10-14 06:07:29,2025-10-14 06:07:29,3,1
+16,Research & Reports,research-reports,Research & Reports related content,2025-10-14 06:07:29,2025-10-14 06:07:29,4,1
+17,Biodiversity,biodiversity,Biodiversity related content,2025-10-14 06:07:29,2025-10-14 06:07:29,4,1
+18,Waste Management,waste-management,Waste Management related content,2025-10-14 06:07:29,2025-10-14 06:07:29,4,1
+19,Glacier Monitoring,glacier-monitoring,Glacier Monitoring related content,2025-10-14 06:07:29,2025-10-14 06:07:29,4,1
+20,Climate Change,climate-change,Climate Change related content,2025-10-14 06:07:29,2025-10-14 06:07:29,4,1
+21,Climbing Techniques,climbing-techniques,Climbing Techniques related content,2025-10-14 06:07:29,2025-10-14 06:07:29,5,1
+22,Seven Summits,seven-summits,Seven Summits related content,2025-10-14 06:07:29,2025-10-14 06:07:29,5,1
+23,Lhotse & Makalu,lhotse-makalu,Lhotse & Makalu related content,2025-10-14 06:07:29,2025-10-14 06:07:29,5,1
+24,Manaslu,manaslu,Manaslu related content,2025-10-14 06:07:29,2025-10-14 06:07:29,5,1
+25,Everest,everest,Everest related content,2025-10-14 06:07:29,2025-10-14 06:07:29,5,1
+26,Gear & Logistics,gear-logistics,Gear & Logistics related content,2025-10-14 06:07:29,2025-10-14 06:07:29,6,1
+27,Team Highlights,team-highlights,Team Highlights related content,2025-10-14 06:07:29,2025-10-14 06:07:29,6,1
+28,Route & Weather,route-weather,Route & Weather related content,2025-10-14 06:07:29,2025-10-14 06:07:29,6,1
+29,Base Camp Reports,base-camp-reports,Base Camp Reports related content,2025-10-14 06:07:29,2025-10-14 06:07:29,6,1
+30,Summit Updates,summit-updates,Summit Updates related content,2025-10-14 06:07:29,2025-10-14 06:07:29,6,1

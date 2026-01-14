@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Include Roboto Font -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  body, h1, h2, h3, h4, p, li, a {
+    font-family: 'Roboto', sans-serif;
+  }
+</style>
+
+<section class="bg-gray-100">
+
+  <!-- Hero Section -->
+  <div class="relative bg-gray-900">
+    <img 
+      src="https://images.unsplash.com/photo-1500048993953-d23a436266cf?auto=format&fit=crop&w=1470&q=80" 
+      alt="Mount Everest Summit" 
+      class="w-full h-64 md:h-80 object-cover brightness-75"
+    />
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+      <h1 class="text-3xl md:text-5xl font-bold text-white drop-shadow-lg tracking-wide">Terms & Conditions</h1>
+      <p class="mt-2 text-sm md:text-base text-gray-300">Please read carefully before confirming your expedition</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="w-full max-w-5xl mx-auto px-4 py-14">
+    <div class="bg-white shadow-xl rounded-2xl p-8 md:p-12 space-y-10 text-gray-800 text-sm leading-relaxed">
+
+      <!-- 1. Expedition Agreement -->
+      <section>
+        <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 border-b pb-1">1. Expedition Agreement</h2>
+        <p>
+          By reserving your expedition with <strong>Everest Summit Adventures</strong>, you agree to comply with
+          the terms and conditions set forth by the Nepal Ministry of Tourism and other relevant authorities.
+          Expedition schedules and logistics are subject to environmental, weather, and regulatory conditions.
+        </p>
+        <p class="mt-3">
+          Our commitment is to deliver safe, professionally guided climbs with respect for mountain ecosystems,
+          Sherpa traditions, and local communities.
+        </p>
+      </section>
+
+      <!-- 2. Booking & Payments -->
+      <section>
+        <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 border-b pb-1">2. Booking & Payments</h2>
+        <p>
+          A <strong>30% non-refundable deposit</strong> is required to secure your booking. The remaining balance must be paid
+          at least <strong>90 days before expedition departure</strong>.
+        </p>
+        <ul class="list-disc list-inside mt-3 space-y-1">
+          <li>Payments can be made via bank transfer or major credit cards.</li>
+          <li>Expedition cost includes permits, Sherpa support, accommodation, and meals as outlined in your itinerary.</li>
+          <li>Failure to pay the balance on time may lead to automatic cancellation.</li>
+        </ul>
+      </section>
+
+      <!-- 3. Health & Safety Requirements -->
+      <section>
+        <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 border-b pb-1">3. Health & Safety Requirements</h2>
+        <p>
+          Participation requires medical clearance for high-altitude climbing. Each climber must demonstrate
+          adequate fitness, mental readiness, and prior experience above 6,000 meters.
+        </p>
+        <ul class="list-disc list-inside mt-3 space-y-1">
+          <li>Comprehensive travel insurance covering emergency evacuation.</li>
+          <li>Proof of recent medical checkup or health certification.</li>
+          <li>COVID-19 vaccination and relevant travel documents (as required).</li>
+        </ul>
+      </section>
+
+      <!-- 4. Risk Acknowledgement -->
+      <section>
+        <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 border-b pb-1">4. Risk Acknowledgement & Liability</h2>
+        <p>
+          Mountaineering involves serious risks such as:
+        </p>
+        <ul class="list-disc list-inside mt-3 space-y-1">
+          <li>Altitude sickness or hypoxia</li>
+          <li>Avalanches, rockfalls, or ice collapses</li>
+          <li>Extreme weather or natural disasters</li>
+          <li>Equipment or transportation failure</li>
+        </ul>
+        <p class="mt-3">
+          By joining, you acknowledge these risks and agree to follow all expedition leader and Sherpa instructions.
+          <strong>Everest Summit Adventures</strong> is not liable for injuries, delays, or losses arising from
+          natural or unforeseen events.
+        </p>
+      </section>
+
+      <!-- 5. Cancellation & Refund Policy -->
+      <section>
+        <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 border-b pb-1">5. Cancellation & Refund Policy</h2>
+        <p>Refunds are determined based on notice period before expedition departure:</p>
+        <ul class="list-disc list-inside mt-3 space-y-1">
+          <li><strong>120+ days prior:</strong> 50% refund of total cost</li>
+          <li><strong>60–119 days prior:</strong> 25% refund</li>
+          <li><strong>Less than 60 days:</strong> No refund</li>
+        </ul>
+        <p class="mt-3">
+          If the expedition is canceled due to government restrictions or severe weather,
+          participants may receive <strong>credit for future climbs within 12 months</strong>.
+        </p>
+      </section>
+
+      <!-- 6. Environmental Responsibility -->
+      <section>
+        <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 border-b pb-1">6. Environmental Responsibility</h2>
+        <p>
+          We adhere to <strong>“Leave No Trace”</strong> principles to preserve the Himalayas. Each climber must:
+        </p>
+        <ul class="list-disc list-inside mt-3 space-y-1">
+          <li>Carry out all non-biodegradable waste.</li>
+          <li>Use eco-friendly and biodegradable materials.</li>
+          <li>Avoid disturbing wildlife and vegetation.</li>
+          <li>Respect sacred sites and local customs.</li>
+        </ul>
+      </section>
+
+      <!-- 7. Insurance Requirements -->
+      <section>
+        <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 border-b pb-1">7. Insurance Requirements</h2>
+        <p>All participants must carry insurance that includes:</p>
+        <ul class="list-disc list-inside mt-3 space-y-1">
+          <li>Emergency evacuation (minimum USD 100,000 coverage)</li>
+          <li>Medical treatment and hospitalization</li>
+          <li>Trip cancellation or interruption</li>
+          <li>Loss or theft of personal gear</li>
+        </ul>
+      </section>
+
+      <!-- 8. Legal Jurisdiction -->
+      <section>
+        <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 border-b pb-1">8. Legal Jurisdiction</h2>
+        <p>
+          All disputes are governed by the laws of <strong>Nepal</strong>. Legal proceedings will be conducted in
+          the courts of <strong>Kathmandu</strong> in accordance with Nepal Mountaineering Association (NMA) regulations.
+        </p>
+      </section>
+
+      <!-- 9. Media & Intellectual Property -->
+      <section>
+        <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 border-b pb-1">9. Media & Intellectual Property Rights</h2>
+        <p>
+          <strong>Everest Summit Adventures</strong> reserves the right to use expedition photos and videos for
+          promotional and educational purposes. Participants may request privacy exceptions in writing before departure.
+        </p>
+      </section>
+
+      <!-- 10. Participant Conduct -->
+      <section>
+        <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 border-b pb-1">10. Participant Conduct & Compliance</h2>
+        <p>
+          Climbers are expected to uphold safety, discipline, and respect for fellow team members and the environment.
+          Any misconduct, disregard for safety rules, or disrespect toward Sherpa staff may result in removal from the expedition without refund.
+        </p>
+      </section>
+
+      <!-- Final Acknowledgement -->
+      <div class="my-10 h-px w-full bg-gray-300"></div>
+      <section>
+        <p>
+          By confirming your booking, you acknowledge that you have read, understood, and agreed to the above terms.
+          Mountaineering involves personal risk, and you voluntarily accept the challenges associated with high-altitude expeditions.
+        </p>
+      </section>
+
+      <!-- Footer Info -->
+      <div class="mt-10 border-t pt-6 text-center text-xs text-gray-500">
+        <p>
+          Last Updated: October 2025<br>
+          © 2025 Everest Summit Adventures | Registered in Nepal: TAAN / RNAC / NMA 2345-2024
+        </p>
+      </div>
+
+    </div>
+    
+  </main>
+   <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-10 mt-16">
+    <div class="max-w-6xl mx-auto px-4 text-center text-xs md:text-sm text-gray-400">
+      &copy; 2025 <span class="text-white font-medium">Everest Summit Adventures</span>. All rights reserved. 
+      | Registered in Nepal: TAAN / RNAC / NMA 2345-2024
+    </div>
+  </footer>  
+</section>
+
+{% endblock %}

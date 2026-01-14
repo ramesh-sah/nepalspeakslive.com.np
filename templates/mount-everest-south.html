@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Main Content -->
+<main class="w-full max-w-full mx-auto p-0 m-0">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Main Content -->
+        <div class="lg:col-span-3">
+            <a href="{% if exclusive and exclusive.slug %}{% url 'news-detail' exclusive.slug %}{% else %}#{% endif %}">
+
+                <article class="mb-8">
+                   {% if exclusive.featured_image %}
+    <img src="{{ exclusive.featured_image.url }}" alt="Everest" class="w-full h-96 object-cover rounded-lg" />
+{% else %}
+    <img src="{% static '/images/17-feared-dead-on-everest-this-season_b4ea3229.jpg' %}" alt="Everest" class="w-full h-96 object-cover rounded-lg" />
+{% endif %}
+
+                    <div class="mt-4">
+                        <h1 class="text-3xl font-bold text-black mb-2">
+                            {{ exclusive.title }}
+                        </h1>
+                        <p class="text-gray-600 text-lg">
+                            {{ exclusive.summary|default:"" }}
+                        </p>
+                        <div class="mt-4 flex items-center text-sm text-gray-500">
+                            <span class="bg-red-600 text-white px-2 py-1 rounded">EXCLUSIVE</span>
+                            <span class="mx-2">•</span>
+                            <span>{{ exclusive.published_date|date:"M d, Y" }}</span>
+                            <span class="mx-2">•</span>
+                            <span>{{ exclusive.category.name }}</span>
+                        </div>
+                    </div>
+                </article>
+            </a>
+            
+            <!-- latest News -->
+            <div class="bg-red-100 p-4 mb-8 flex items-center">
+                <span class="bg-red-600 text-white px-3 py-1 rounded-sm text-sm mr-4">Latest News</span>
+                <p class="font-bold">Unexpected storms force base camp evacuations</p>
+            </div>
+            
+            <!-- News Grid -->
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                {% for news in latest %}
+                <a href="{% url 'news-detail' news.slug %}" class="block group">
+                    <article class="overflow-hidden rounded transition-colors duration-15 hover:bg-gray-50">
+                        <div class="w-full h-40 bg-gray-100 overflow-hidden">
+                            {% if news.featured_image %}
+                            <img src="{{ news.featured_image.url }}" alt="{{ news.title }}"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
+                            {% else %}
+                            <div class="w-full h-full bg-gray-200"></div>
+                            {% endif %}
+                        </div>
+                        <div class="px-4 py-3">
+                            <div class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                                <span>{{ news.category.name }}</span>
+                                <time datetime="{{ news.published_date|date:'Y-m-d' }}">
+                                    {{ news.published_date|date:"M d, Y" }}
+                                </time>
+                            </div>
+                            <h3 class="text-sm font-semibold leading-snug text-black mb-1 line-clamp-2">
+                                {{ news.title }}
+                            </h3>
+                            <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                                {{ news.summary|default:"" }}
+                            </p>
+                            <span class="text-sm font-medium text-black underline group-hover:text-gray-800">
+                                Read full story →
+                            </span>
+                        </div>
+                    </article>
+                </a>
+                {% endfor %}
+            </section>
+            <!-- Breaking News -->
+            <div class="bg-red-100 p-4 mb-8 flex items-center">
+                <span class="bg-red-600 text-white px-3 py-1 rounded-sm text-sm mr-4">Trending News</span>
+                <p class="font-bold">Unexpected storms force base camp evacuations</p>
+            </div>
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                {% for news in breaking %}
+                <a href="{% url 'news-detail' news.slug %}" class="block group ">
+                    <article class="overflow-hidden rounded transition-colors duration-15 hover:bg-gray-50">
+                        <div class="w-full h-40 bg-gray-100 overflow-hidden">
+                            {% if news.featured_image %}
+                            <img src="{{ news.featured_image.url }}" alt="{{ news.title }}" alt="Global Climate Summit"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
+                            {% else %}
+                            <div class="w-full h-full bg-gray-200"></div>
+                            {% endif %}
+                        </div>
+                        <div class="px-4 py-3">
+                            <div class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                                <span>{{ news.category.name }}</span>
+                                <time datetime="{{ news.published_date|date:'Y-m-d' }}">
+                                    {{ news.published_date|date:"M d, Y" }}
+                                </time>
+                            </div>
+                            <h3 class="text-sm font-semibold leading-snug text-black mb-1 line-clamp-2">
+                                {{ news.title }}
+                            </h3>
+                            <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                                {{ news.summary|default:"" }}
+                            </p>
+                            <span class="text-sm font-medium text-black underline group-hover:text-gray-800">
+                                Read full story →
+                            </span>
+                        </div>
+                    </article>
+                </a>
+                {% endfor %}
+            
+            </section>
+            <!-- Breaking News -->
+            <div class="bg-red-100 p-4 mb-8 flex items-center">
+                <span class="bg-red-600 text-white px-3 py-1 rounded-sm text-sm mr-4">BREAKING News</span>
+                <p class="font-bold">Unexpected storms force base camp evacuations</p>
+            </div>
+            <section class="grid grid-cols-1 md:grid-cols-1 gap-6 mb-8">
+                {% for news in breaking %}
+                <a href="{% url 'news-detail' news.slug %}" class="block group ">
+                    <article class="overflow-hidden rounded transition-colors duration-15 hover:bg-gray-50">
+                        <div class="w-full h-40 bg-gray-100 overflow-hidden">
+                            {% if news.featured_image %}
+                            <img src="{{ news.featured_image.url }}" alt="{{ news.title }}"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
+                            {% else %}
+                            <div class="w-full h-full bg-gray-200"></div>
+                            {% endif %}
+                        </div>
+                        <div class="px-4 py-3">
+                            <div class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                                <span>{{ news.category.name }}</span>
+                                <time datetime="{{ news.published_date|date:'Y-m-d' }}">
+                                    {{ news.published_date|date:"M d, Y" }}
+                                </time>
+                            </div>
+                            <h3 class="text-sm font-semibold leading-snug text-black mb-1 line-clamp-2">
+                                {{ news.title }}
+                            </h3>
+                            <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                                {{ news.summary|default:"" }}
+                            </p>
+                            <span class="text-sm font-medium text-black underline group-hover:text-gray-800">
+                                Read full story →
+                            </span>
+                        </div>
+                    </article>
+                </a>
+                {% endfor %}
+            
+            </section>
+            
+            <div class="bg-red-100 p-4 mb-8 flex items-center">
+                <span class="bg-red-600 text-white px-3 py-1 rounded-sm text-sm mr-4">Exclusive News</span>
+                <p class="font-bold">Unexpected storms force base camp evacuations</p>
+            </div>
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                {% for news in latest %}
+                <a href="{% url 'news-detail' news.slug %}" class="block group">
+                    <article class="overflow-hidden rounded transition-colors duration-15 hover:bg-gray-50">
+                        <div class="w-full h-40 bg-gray-100 overflow-hidden">
+                            {% if news.featured_image %}
+                            <img src="{{ news.featured_image.url }}" alt="{{ news.title }}"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
+                            {% else %}
+                            <div class="w-full h-full bg-gray-200"></div>
+                            {% endif %}
+                        </div>
+                        <div class="px-4 py-3">
+                            <div class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                                <span>{{ news.category.name }}</span>
+                                <time datetime="{{ news.published_date|date:'Y-m-d' }}">
+                                    {{ news.published_date|date:"M d, Y" }}
+                                </time>
+                            </div>
+                            <h3 class="text-sm font-semibold leading-snug text-black mb-1 line-clamp-2">
+                                {{ news.title }}
+                            </h3>
+                            <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                                {{ news.summary|default:"" }}
+                            </p>
+                            <span class="text-sm font-medium text-black underline group-hover:text-gray-800">
+                                Read full story →
+                            </span>
+                        </div>
+                    </article>
+                </a>
+                {% endfor %}
+            </section>
+           
+        </div>
+
+        <div class="lg:col-span-1">
+            <!-- Sponsored Content -->
+            <div class="sticky top-8 space-y-4">
+                <a href="{{ ads.inquiry.website }}" class="sticky top-8 space-y-4" target="_blank" rel="noopener noreferrer">
+                    <div class="bg-gray-50 p-1 rounded-lg border border-gray-200">
+                        <h3 class="text-sm font-bold text-gray-500 mb-3">ADVERTISEMENT</h3>
+                        <div class="aspect-[4/6] bg-gray-200 rounded-lg overflow-hidden">
+                                        {% if ".mp4" in ads.inquiry.marketing_materials.url|stringformat:"s" or ".webm" in ads.inquiry.marketing_materials.url|stringformat:"s" %}
+    <video class="w-full h-full object-cover" autoplay loop muted playsinline>
+        <source src="{{ ads.inquiry.marketing_materials.url }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+{% else %}
+    <img src="{{ ads.inquiry.marketing_materials.url }}" alt="Ad" class="w-full h-full object-cover">
+{% endif %}
+
+
+                        </div>
+                    </div>
+                </a>
+                    <p class="text-xs text-gray-600 mt-2">Sponsored: {{ ads.inquiry.company_name}}</p>
+                </div>
+        
+               
+        
+                <!-- Most Read -->
+        
+            </div>
+        </div>
+    </div>
+
+   
+
+
+
+<style>
+    .bbc-border {
+        border-left: 4px solid #1D4F91;
+        padding-left: 1rem;
+    }
+
+    .group:hover .group-hover\:scale-105 {
+        transform: scale(1.05);
+    }
+</style>
+
+{% endblock %}

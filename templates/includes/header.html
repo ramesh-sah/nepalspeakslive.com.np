@@ -1,0 +1,344 @@
+{% load static %}
+<div class="w-full bg-[#FFFFFF] m-0 p-0">
+    <!-- Header Section -->
+    <header class=" fixed w-full z-50">
+        <!-- Sidebar Overlay -->
+        <div class="fixed inset-0 bg-black/50 z-50 hidden" id="sidebar-overlay"></div>
+
+    <!-- Side Navigation -->
+<aside 
+    id="sidebar" 
+    class="fixed left-0 top-0 h-full w-72 bg-white shadow-xl border-r border-gray-200 transform -translate-x-full transition-transform duration-300 ease-in-out z-50 flex flex-col justify-between font-['Roboto',sans-serif]"
+>
+    <!-- Header -->
+    <div>
+        <a href="{% url 'home' %}">
+            <div class="p-5 border-b border-gray-200 flex items-center justify-between">
+            <!-- <h2 class="text-xl font-sans font-semibold text-gray-800 tracking-tight">
+                <Img> /static/nsl_logo.jpeg</Img>
+            </h2> -->
+            <!-- <i class="fas fa-mountain text-blue-600 text-lg"></i> -->
+             <h2 class="text-xl font-sans font-semibold text-gray-800 tracking-tight">
+    <img src="/static/images/nsl_logo.png" alt="NSL Logo" class="h-8 inline-block">
+</h2>
+
+        </div>
+        </a>
+
+        <!-- Search Section -->
+        <div class="p-4 border-b border-gray-100">
+            <form method="get" action="{% url 'news' %}" class="relative w-full">
+                <input 
+                    type="search" 
+                    name="q"
+                    value="{{ search_query }}" 
+                    placeholder="Search news..." 
+                    class="w-full px-4 py-2 text-sm text-gray-700 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all duration-200"
+                >
+                <button 
+                    type="submit" 
+                    class="absolute right-3 top-2.5 text-gray-500 hover:text-blue-600 transition-colors"
+                >
+                    <i class="fas fa-search text-sm" style="color: #000000;"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="p-3 border-b border-gray-100">
+            <ul class="space-y-1">
+                <li>
+                    <a href="{% url 'home' %}" 
+                        class="flex items-center px-3 py-2 rounded-lg text-gray-800 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200">
+                        <i class="fas fa-home mr-3 text-gray-500 text-base" style="color: #000000;"></i>
+                        <span class="font-medium text-sm">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'news' %}" 
+                        class="flex items-center px-3 py-2 rounded-lg text-gray-800 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200">
+                        <i class="fas fa-newspaper mr-3 text-gray-500 text-base" style="color: #000000;"></i>
+                        <span class="font-medium text-sm">News</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'mount-everest-south' %}" 
+                        class="flex items-center px-3 py-2 rounded-lg text-gray-800 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200">
+                        <i class="fas fa-mountain-sun mr-3 text-gray-500 text-base" style="color: #000000;"></i>
+                        <span class="font-medium text-sm">Mount Everest South</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'mount-everest-north' %}" 
+                        class="flex items-center px-3 py-2 rounded-lg text-gray-800 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200">
+                        <i class="fas fa-mountain-sun mr-3 text-gray-500 text-base" style="color: #000000;"></i>
+                        <span class="font-medium text-sm">Mount Everest North</span>
+                    </a>
+                </li>
+                 <li>
+                    <a href="{% url 'everest_weather_clean' %}" 
+                        class="flex items-center px-3 py-2 rounded-lg text-gray-800 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200">
+                        <i class="fas fa-solid fa-cloud mr-3  text-gray-500 text-base" style="color: #000000;"></i>
+                    
+                        <span class="font-medium text-sm">Weather</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Footer Menu Links (now part of main nav) -->
+            <ul class="mt-5 pt-4 border-t border-gray-200 space-y-1">
+              
+                <li>
+                    <a href="{% url 'contact-us' %}" 
+                        class="flex items-center px-3 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200">
+                        <i class="fas fa-envelope mr-3 text-gray-500 text-base" style="color: #000000;"></i>
+                        <span class="font-medium text-sm">Contact Us</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'advertise-with-us' %}" 
+                        class="flex items-center px-3 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200">
+                        <i class="fas fa-bullhorn mr-3 text-gray-500 text-base" style="color: #000000;"></i>
+                        <span class="font-medium text-sm">Advertise with Us</span>
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Social Icons Footer -->
+    <div class="p-4 border-t border-gray-100">
+        <div class="flex justify-center space-x-5">
+              <a href="https://wa.me/9779705970563" target="_blank" class="text-gray-500 hover:text-red-600 transition-transform transform hover:scale-110">
+                <i class="fab fa-whatsapp text-lg" style="color: #000000;"></i>
+            </a>
+            <a href="https://www.facebook.com/share/1CRDtdtMGS/" target="_blank" class="text-gray-500 hover:text-blue-600 transition-transform transform hover:scale-110">
+                <i class="fab fa-facebook-f text-lg" style="color: #000000;"></i>
+            </a>
+            <a href="https://www.x.com/gautamjha136139?s=11" target="_blank" class="text-gray-500 hover:text-sky-500 transition-transform transform hover:scale-110">
+                <i class="fab fa-twitter text-lg" style="color: #000000;"></i>
+            </a>
+            <a href="https://www.instagram.com/mounteverest.summit/" target="_blank" class="text-gray-500 hover:text-pink-600 transition-transform transform hover:scale-110">
+                <i class="fab fa-instagram text-lg" style="color: #000000;"></i>
+            </a>
+            <a href="https://www.tiktok.com/@mt.everestsummit?_t=ZS-90Vd9BuardF&_r=1" target="_blank" class="text-gray-500 hover:text-black transition-transform transform hover:scale-110">
+                <i class="fab fa-tiktok text-lg" style="color: #000000;"></i>
+            </a>
+            <a href="https://www.youtube.com/@mounteverestsummit" target="_blank" class="text-gray-500 hover:text-red-600 transition-transform transform hover:scale-110">
+                <i class="fab fa-youtube text-lg" style="color: #000000;"></i>
+            </a>
+              <a href="https://www.linkedin.com/company/mount-everest-summit/" target="_blank" class="text-gray-500 hover:text-red-600 transition-transform transform hover:scale-110">
+                <i class="fab fa-linkedin text-lg" style="color: #000000;"></i>
+            </a>
+        </div>
+
+        <p class="text-center text-xs text-gray-400 mt-3">
+            © 2025 Mount Everest News
+        </p>
+    </div>
+</aside>
+
+
+
+      <!-- 🌐 Modern Minimal Header Bar | Mount Everest -->
+<section class="bg-white text-black border-y border-gray-200">
+  <div class="max-w-7xl  flex items-center justify-between px-0  py-3">
+
+    <!-- Left: Menu Toggle + Logo -->
+    <div class="flex items-center space-x-4 ">
+      <!-- Toggle Button -->
+      <button id="menu-toggle" aria-label="Open Menu"
+              class="p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300">
+        <i class="fas fa-bars text-lg text-gray-700"></i>
+      </button>
+
+ <!-- Logo + Title Section -->
+<!-- Logo + Title Section with Minimalistic/Norwester Font -->
+<!-- Include this in your <head> if not already included -->
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
+<section>
+  <a href="{% url 'home' %}" class="inline-flex flex-col items-center space-y-1 ">
+    <h2 class="text-xl font-sans font-semibold text-gray-800 tracking-tight">
+    <img src="/static/images/nsl_logo.png" alt="NSL Logo" class="h-8 inline-block">
+</h2>
+
+  </a>
+</section>
+
+
+
+
+      
+    </div>
+
+    <!-- Center: Contact + Social -->
+    <div class="hidden md:flex items-center space-x-5">
+      <!-- Advertisement Contact -->
+      <span class="ml-60 font-semibold text-gray-600">For Advertisement Contact:</span>
+      <!-- Advertisement Label -->
+<!-- <span class="text-sm font-bold text-gray-900 uppercase border-l-4 border-black pl-3">
+  For Advertisement Contact
+</span> -->
+
+
+      
+  <!-- Phone -->
+  <!-- <a href="tel:+9779705970563"
+     class="text-sm font-medium text-black hover:text-gray-700 transition">
+   
+  </a> -->
+
+<!-- WhatsApp Contact Button -->
+<a href="https://wa.me/9779705970563" 
+   target="_blank" 
+   aria-label="WhatsApp"
+   class="flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-white text-black shadow-sm hover:bg-green-500 hover:text-white transition-all duration-300 ease-in-out text-sm font-medium">
+  <i class="fab fa-whatsapp text-lg"></i>
+  <span class="hidden sm:inline">WhatsApp</span>
+</a>
+
+  <!-- Facebook -->
+  <!-- <a href="https://www.facebook.com/" target="_blank" aria-label="Facebook"
+     class="flex items-center justify-center w-7 h-7 rounded-lg bg-white hover:bg-gray-200 text-black transition">
+    <i class="fab fa-facebook-f text-sm"></i>
+  </a> -->
+
+  <!-- Instagram -->
+  <!-- <a href="https://www.instagram.com/mounteverest.summit/" target="_blank" aria-label="Instagram"
+     class="flex items-center justify-center w-7 h-7 rounded-lg bg-white hover:bg-gray-200 text-black transition">
+    <i class="fab fa-instagram text-sm"></i>
+  </a> -->
+<!-- Linkedin-->
+  <!-- <a href="https://www.linkedin.com/company/mount-everest-summit" target="_blank" aria-label="LinkedIn"
+     class="flex items-center justify-center w-7 h-7 rounded-lg bg-white hover:bg-gray-200 text-black transition">
+    <i class="fab fa-linkedin text-sm"></i>
+  </a> -->
+
+  <!-- Twitter -->
+  <!-- <a href="https://twitter.com/mounteverestsummit" target="_blank" aria-label="Twitter"
+     class="flex items-center justify-center w-7 h-7 rounded-lg bg-white hover:bg-gray-200 text-black transition">
+    <i class="fab fa-twitter text-sm"></i>
+  </a> -->
+
+  <!-- TikTok -->
+  <!-- <a href="https://www.tiktok.com/" target="_blank" aria-label="TikTok"
+     class="flex items-center justify-center w-7 h-7 rounded-lg bg-white hover:bg-gray-200 text-black transition">
+    <i class="fab fa-tiktok text-sm"></i>
+  </a> -->
+
+  <!-- YouTube -->
+  <!-- <a href="https://www.youtube.com/@mounteverestsummit" target="_blank" aria-label="YouTube"
+     class="flex items-center justify-center w-7 h-7 rounded-lg bg-white hover:bg-gray-200 text-black transition">
+    <i class="fab fa-youtube text-sm"></i>
+  </a> -->
+
+    </div>
+
+
+
+
+    <!-- Right: Register / Login -->
+    <div class="flex items-center space-x-3 ">
+      <a href="{% url 'registration' %}"
+         class=" bg-black pl-10 hover:bg-gray-200 hover:text-black text-white px-7 py-2  text-sm font-medium transition">
+        Register
+      </a>
+      <a href="/admin"
+         class="hidden md:inline-flex bg-gray-100 hover:bg-gray-200 text-black px-7 py-2  text-sm font-medium transition">
+        Login
+      </a>
+    </div>
+  </div>
+</section>
+
+        <!-- divider here-->
+        <div class="w-full border-b border-gray-200"></div>
+
+        <nav id="sub-menu-nav" class="hidden lg:flex items-center justify-center h-12 w-full bg-gray-50 border-b border-gray-200 transition-all duration-300">
+    <div class="flex items-center justify-center space-x-8 max-w-full mx-auto px-0">
+        <a href="{% url 'home' %}" class="text-gray-600 hover:text-blue-600 font-medium text-sm uppercase tracking-wide transition-colors relative py-1
+           after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all
+           hover:after:w-full">
+            Home
+        </a>
+        <a href="{% url 'news' %}" class="text-gray-600 hover:text-blue-600 font-medium text-sm uppercase tracking-wide transition-colors relative py-1
+           after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all
+           hover:after:w-full">
+            News
+        </a>
+        <a href="{% url 'mount-everest-south' %}" class="text-gray-600 hover:text-blue-600 font-medium text-sm uppercase tracking-wide transition-colors relative py-1
+           after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all
+           hover:after:w-full">
+            Mount Everest South
+        </a>
+        <a href="{% url 'mount-everest-north' %}" class="text-gray-600 hover:text-blue-600 font-medium text-sm uppercase tracking-wide transition-colors relative py-1
+           after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all
+           hover:after:w-full">
+            Mount Everest North
+        </a>
+        <a href="{% url 'everest_weather_clean' %}" class="text-gray-600 hover:text-blue-600 font-medium text-sm uppercase tracking-wide transition-colors relative py-1
+           after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all
+           hover:after:w-full">
+            Weather
+        </a>
+    </div>
+</nav>
+
+
+
+    </header>
+
+    <!-- Main Content placeholder removed (base has main) -->
+
+    <script>
+        // Sidebar Toggle Logic
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const menuToggle = document.getElementById('menu-toggle');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+            document.body.classList.toggle('overflow-hidden');
+        }
+
+        // Event Listeners
+        menuToggle.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        // Close sidebar on ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !sidebar.classList.contains('-translate-x-full')) {
+                toggleSidebar();
+            }
+        });
+    </script>
+    <script>
+    const subMenuNav = document.getElementById('sub-menu-nav');
+    let lastScrollY = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+
+        if (currentScrollY > lastScrollY) {
+            // Scroll down → hide completely
+            subMenuNav.style.transform = 'translateY(+100%)';
+            subMenuNav.style.opacity = '0';
+        } else {
+            // Scroll up → show completely
+            subMenuNav.style.transform = 'translateY(0)';
+            subMenuNav.style.opacity = '1';
+        }
+
+        lastScrollY = currentScrollY;
+    });
+</script>
+
+<style>
+    #sub-menu-nav {
+        transition: transform 0.01s ease, opacity 0.0s ease;
+    }
+</style>
+</div>

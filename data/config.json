@@ -1,0 +1,12 @@
+{
+    "openai_api_key": "skip_ai_on_quota_error",
+    "max_pages": 2000,
+    "max_articles": 500000,
+    "delay_between_requests": 2,
+    "request_timeout": 10,
+    "enable_ai_enhancement": false,
+    "image_max_width": 1200,
+    "image_max_height": 800,
+    "image_quality": 85,
+    "skip_ai_on_quota_error": true
+}

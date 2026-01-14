@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="w-full max-w-full mx-auto px-0 my-2">
+    <header>
+        <div class="flex flex-wrap gap-3 font-semibold text-sm">
+            <a href="{% url 'news' %}" class="bg-gray-100 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg transition">
+                All
+            </a>
+            {% for category in categories|slice:":10" %}
+           
+            <a href="?category={{ category.slug }}"
+               class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg transition">
+                {{ category.name }}
+            </a>
+            {% endfor %}
+        </div>
+        <hr class="my-3 border-t border-gray-200" />
+    </header>
+
+    <div class="flex flex-col lg:flex-row gap-8">
+        <div class="w-full lg:w-3/4 mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for news in page_obj %}
+                <a href="{% url 'news-detail' news.slug %}" class="block group">
+                    <article class="overflow-hidden rounded transition-colors duration-15 hover:bg-gray-50">
+                        <div class="w-full h-40 bg-gray-100 overflow-hidden">
+                            {% if news.featured_image %}
+                            <img src="{{ news.featured_image.url }}" alt="{{ news.title }}"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
+                            {% else %}
+                            <div class="w-full h-full bg-gray-200"></div>
+                            {% endif %}
+                        </div>
+                        <div class="px-4 py-3">
+                            <div
+                                class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                                <span>{{ news.category.name }}</span>
+                                <time datetime="{{ news.published_date|date:'Y-m-d' }}">
+                                    {{ news.published_date|date:"M d, Y" }}
+                                </time>
+                            </div>
+                            <h3 class="text-sm font-semibold leading-snug text-black mb-1 line-clamp-2">
+                                {{ news.title }}
+                            </h3>
+                            <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                                {{ news.summary|default:"" }}
+                            </p>
+                            <span class="text-sm font-medium text-black underline group-hover:text-gray-800">
+                                Read full story →
+                            </span>
+                        </div>
+                    </article>
+                </a>
+                {% endfor %}
+            </div>
+
+           <!-- Pagination -->
+<nav class="mt-10 flex justify-center" aria-label="Pagination">
+  <ul class="flex flex-wrap items-center justify-center gap-2 text-sm sm:gap-3">
+    {% if page_obj.has_previous %}
+    <li>
+      <a href="?page={{ page_obj.previous_page_number }}"
+        class="px-3 py-1 sm:px-4 sm:py-2 rounded-md border border-gray-200 text-gray-600 hover:bg-gray-100 hover:text-black transition-colors duration-150"
+        aria-label="Previous page">
+        « Prev
+      </a>
+    </li>
+    {% endif %}
+
+    {# Smart pagination logic: show first, last, and nearby pages only #}
+    {% for num in page_obj.paginator.page_range %}
+      {% if num == 1 or num == page_obj.paginator.num_pages or num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
+
+        <li>
+          {% if page_obj.number == num %}
+            <span
+              class="px-3 py-1 sm:px-4 sm:py-2 rounded-md border border-gray-800 bg-black text-white font-semibold shadow-sm"
+              aria-current="page">
+              {{ num }}
+            </span>
+          {% else %}
+            <a href="?page={{ num }}"
+              class="px-3 py-1 sm:px-4 sm:py-2 rounded-md border border-gray-200 text-gray-600 hover:bg-gray-100 hover:text-black transition-all duration-150">
+              {{ num }}
+            </a>
+          {% endif %}
+        </li>
+      {% elif num == page_obj.number|add:'-3' or num == page_obj.number|add:'3' %}
+        <li><span class="px-2 text-gray-400">…</span></li>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <li>
+      <a href="?page={{ page_obj.next_page_number }}"
+        class="px-3 py-1 sm:px-4 sm:py-2 rounded-md border border-gray-200 text-gray-600 hover:bg-gray-100 hover:text-black transition-colors duration-150"
+        aria-label="Next page">
+        Next »
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="w-full lg:w-1/4 space-y-8">
+            <div class="bg-white rounded-lg shadow-sm p-4">
+                <h3 class="text-sm font-bold text-black mb-3 border-b border-gray-200 pb-2">
+                    Filter by category
+                </h3>
+                <ul class="space-y-2">
+                    {% for sub_category in sub_categories %}
+                    <li>
+                        <a href="?subcategory={{ sub_category.slug }}"
+                            class="text-sm font-light text-black hover:underline hover:text-gray-800 transition-colors duration-150">
+                            {{ sub_category.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-4">
+                <h3 class="text-sm font-bold text-black mb-4 border-b border-gray-200 pb-2">
+                    Latest Updates
+                </h3>
+                <ul class="space-y-4">
+                    {% for news in latest_news %}
+                    <li>
+                        <a href="{% url 'news-detail' news.slug %}" class="flex items-start space-x-3">
+                            {% if news.featured_image %}
+                            <img src="{{ news.featured_image.url }}" alt="{{ news.title }}"
+                                class="w-16 h-12 object-cover rounded-sm">
+                            {% else %}
+                            <div class="w-16 h-12 bg-gray-200 rounded-sm"></div>
+                            {% endif %}
+                            <div class="flex-1">
+                                <p class="text-sm font-light text-black leading-tight mb-1">
+                                    {{ news.title|truncatechars:40 }}
+                                </p>
+                                <time class="text-xs text-gray-500">{{ news.published_date|date:"M d, Y" }}</time>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </aside>
+    </div>
+</div>
+{% endblock %}

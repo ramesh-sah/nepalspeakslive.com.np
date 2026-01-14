@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css" />
+
+<div class="w-full bg-gray-50 font-roboto text-black">
+
+<!-- Hero Section -->
+<section class="relative w-full h-[160px] sm:h-[180px] md:h-[200px]">
+    <img src="https://images.unsplash.com/photo-1575819719798-83d97dd6949c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bW91bnQlMjBldmVyZXN0fGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=500" alt="Everest Summit" class="w-full h-full object-cover rounded-b-2xl brightness-90">
+    <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+        <h1 class="text-lg sm:text-xl font-bold text-white drop-shadow-md">Join Everest Summit Today</h1>
+        <p class="mt-1 text-xs sm:text-sm text-white drop-shadow-sm max-w-md">Sign up as a User or Agent to access exclusive features.</p>
+    </div>
+</section>
+
+<!-- Registration Form -->
+<section class="w-full mx-auto my-10 px-0">
+    <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-8 md:p-10 border border-gray-100 max-w-4xl mx-auto">
+
+        <h2 class="text-xl sm:text-2xl font-bold mb-2 text-center">Create Your Account</h2>
+        <p class="text-gray-600 text-xs sm:text-sm text-center mb-6">
+            Register as a User or Agent to unlock exclusive features.
+        </p>
+
+        <form id="registrationForm" method="POST" class="space-y-4 text-sm" novalidate>
+            {% csrf_token %}
+
+            <!-- User Type Selector -->
+         <!-- User Type Selector -->
+<div class="flex justify-center gap-6 mb-6">
+    <div id="userBox" data-value="USER" class="cursor-pointer flex flex-col items-center justify-center p-4 sm:p-5 border-2 border-black rounded-2xl w-28 sm:w-32 hover:border-blue-500 transition user-type-box">
+        <img src="https://plus.unsplash.com/premium_photo-1677252438425-e4125f74fbbe?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dXNlciUyMGxvZ2lufGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=500" alt="User" class="w-12 h-12 sm:w-16 sm:h-16 mb-3 rounded-2xl">
+        <span class="font-medium text-black text-sm sm:text-base">User</span>
+    </div>
+    <div id="agentBox" data-value="AGENT" class="cursor-pointer flex flex-col items-center justify-center p-4 sm:p-5 border-2 border-black rounded-2xl w-28 sm:w-32 hover:border-blue-500 transition user-type-box">
+        <img src="https://images.unsplash.com/vector-1747845727587-7f2ae5d8fa95?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGJ1c2luZXNzfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=500" alt="Agent" class="w-12 h-12 sm:w-16 sm:h-16 mb-3 rounded-2xl">
+        <span class="font-medium text-black text-sm sm:text-base">Agent</span>
+    </div>
+</div>
+
+            <input type="hidden" id="userType" name="user_type" value="USER">
+
+            <!-- Common Fields (2 col) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <input type="text" id="first_name" name="first_name" placeholder="First Name" class="border border-gray-300 rounded-lg p-2 w-full focus:ring-1 focus:ring-blue-400 focus:border-blue-400">
+                    <span class="text-red-500 text-xs hidden" id="error_first_name">Required</span>
+                </div>
+                <div>
+                    <input type="text" id="last_name" name="last_name" placeholder="Last Name" class="border border-gray-300 rounded-lg p-2 w-full focus:ring-1 focus:ring-blue-400 focus:border-blue-400">
+                    <span class="text-red-500 text-xs hidden" id="error_last_name">Required</span>
+                </div>
+                <div>
+                    <input type="text" id="username" name="username" placeholder="Username" class="border border-gray-300 rounded-lg p-2 w-full focus:ring-1 focus:ring-blue-400 focus:border-blue-400">
+                    <span class="text-red-500 text-xs hidden" id="error_username">Required</span>
+                </div>
+                <div>
+                    <input type="email" id="email" name="email" placeholder="Email" class="border border-gray-300 rounded-lg p-2 w-full focus:ring-1 focus:ring-blue-400 focus:border-blue-400">
+                    <span class="text-red-500 text-xs hidden" id="error_email">Invalid Email</span>
+                </div>
+                <div>
+                    <input type="password" id="password" name="password" placeholder="Password" class="border border-gray-300 rounded-lg p-2 w-full focus:ring-1 focus:ring-blue-400 focus:border-blue-400">
+                    <span class="text-red-500 text-xs hidden" id="error_password">Min 6 chars</span>
+                </div>
+                <!-- Phone Field -->
+                <div>
+                    <input type="tel" name="phone_number" id="phone" placeholder="Phone Number" class="border border-gray-300 rounded-lg p-2 w-full focus:ring-1 focus:ring-blue-400 focus:border-blue-400">
+                    <input type="hidden" id="country_code" name="country_code">
+                    <span class="text-red-500 text-xs hidden" id="error_phone">Invalid phone number</span>
+                </div>
+            </div>
+
+            <!-- Agent Fields -->
+            <div id="agentFields" class="hidden mt-4 border-t border-gray-200 pt-4 space-y-3 text-xs">
+                <h3 class="font-semibold text-black mb-2">Agent Information</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <input type="text" name="agency_name" placeholder="Agency Name" class="border border-gray-300 rounded-lg p-2 w-full focus:ring-1 focus:ring-blue-400 focus:border-blue-400">
+                    <input type="text" name="agency_address" placeholder="Agency Address" class="border border-gray-300 rounded-lg p-2 w-full focus:ring-1 focus:ring-blue-400 focus:border-blue-400">
+                    <input type="text" id="agency_phone" name="agency_phone" placeholder="Agency Phone" class="border border-gray-300 rounded-lg p-2 w-full focus:ring-1 focus:ring-blue-400 focus:border-blue-400">
+                    <input type="email" name="agency_email" placeholder="Agency Email" class="border border-gray-300 rounded-lg p-2 w-full focus:ring-1 focus:ring-blue-400 focus:border-blue-400">
+                    <input type="url" name="agency_website" placeholder="Agency Website" class="border border-gray-300 rounded-lg p-2 w-full focus:ring-1 focus:ring-blue-400 focus:border-blue-400">
+                    <input type="text" name="license_number" placeholder="License Number" class="border border-gray-300 rounded-lg p-2 w-full focus:ring-1 focus:ring-blue-400 focus:border-blue-400">
+                    <input type="number" name="years_of_experience" placeholder="Years of Experience" class="border border-gray-300 rounded-lg p-2 w-full focus:ring-1 focus:ring-blue-400 focus:border-blue-400">
+                    <textarea name="additional_info" placeholder="Additional Info" class="border border-gray-300 rounded-lg p-2 w-full focus:ring-1 focus:ring-blue-400 focus:border-blue-400"></textarea>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="w-full bg-blue-600 text-white font-medium py-2 rounded-lg hover:bg-blue-700 shadow-sm transition mt-3">Register</button>
+        </form>
+
+        <p class="text-gray-500 text-xs mt-4 text-center">
+            Already have an account? <a href="/admin" class="text-blue-600 hover:underline">Login</a>
+        </p>
+    </div>
+</section>
+
+<!-- JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<script>
+    // User Type Selection
+    const userBox = document.getElementById('userBox');
+    const agentBox = document.getElementById('agentBox');
+    const userTypeInput = document.getElementById('userType');
+    const agentFields = document.getElementById('agentFields');
+    const agencyPhone = document.getElementById('agency_phone');
+
+    function selectUserType(value) {
+        userTypeInput.value = value;
+        if(value === 'AGENT') {
+            agentFields.classList.remove('hidden');
+            agentBox.classList.add('border-blue-500');
+            userBox.classList.remove('border-blue-500');
+        } else {
+            agentFields.classList.add('hidden');
+            userBox.classList.add('border-blue-500');
+            agentBox.classList.remove('border-blue-500');
+        }
+    }
+    userBox.addEventListener('click', () => selectUserType('USER'));
+    agentBox.addEventListener('click', () => selectUserType('AGENT'));
+    selectUserType('USER');
+
+    // Phone input
+    const phoneInput = document.querySelector("#phone");
+    const countryCodeInput = document.querySelector("#country_code");
+    const iti = window.intlTelInput(phoneInput, {
+        initialCountry: "auto",
+        separateDialCode: true,
+        preferredCountries: ['us','gb','ca','au','in','np'],
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        geoIpLookup: callback => {
+            fetch("https://ipinfo.io/json")
+                .then(res => res.json())
+                .then(data => callback(data.country))
+                .catch(() => callback("us"));
+        }
+    });
+
+    phoneInput.addEventListener("countrychange", () => {
+        countryCodeInput.value = iti.getSelectedCountryData().dialCode;
+    });
+
+    window.addEventListener("load", () => {
+        countryCodeInput.value = iti.getSelectedCountryData().dialCode;
+    });
+
+    // Propagate personal phone to agency phone
+    phoneInput.addEventListener("input", () => {
+        if(userTypeInput.value === 'AGENT') agencyPhone.value = phoneInput.value;
+    });
+
+    // Form validation
+    document.getElementById("registrationForm").addEventListener("submit", (e) => {
+        let valid = true;
+
+        // Clear all errors
+        document.querySelectorAll("span.text-red-500").forEach(el => el.classList.add("hidden"));
+
+        // Required fields
+        if(!document.getElementById("first_name").value.trim()) {
+            valid = false; document.getElementById("error_first_name").classList.remove("hidden");
+        }
+        if(!document.getElementById("last_name").value.trim()) {
+            valid = false; document.getElementById("error_last_name").classList.remove("hidden");
+        }
+        if(!document.getElementById("username").value.trim()) {
+            valid = false; document.getElementById("error_username").classList.remove("hidden");
+        }
+
+        // Email validation
+        const emailVal = document.getElementById("email").value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!emailRegex.test(emailVal)) {
+            valid = false; document.getElementById("error_email").classList.remove("hidden");
+        }
+
+        // Password validation
+        const passwordVal = document.getElementById("password").value;
+        if(passwordVal.length < 6) {
+            valid = false; document.getElementById("error_password").classList.remove("hidden");
+        }
+
+        // Phone validation
+        if(!iti.isValidNumber()) {
+            valid = false; document.getElementById("error_phone").classList.remove("hidden");
+        }
+
+        if(!valid) e.preventDefault();
+    });
+</script>
+</div>
+{% endblock %}

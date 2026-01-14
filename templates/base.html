@@ -1,0 +1,204 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary Title -->
+   
+     <title>{{ meta.title}}</title>
+
+
+    <!-- SEO Meta Tags -->
+   <meta name="description" content="{{ meta.description }}">
+    <meta name="keywords" content="{{ meta.keywords }}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.mounteverest-summit.com/">
+    
+    
+    <meta name="google-site-verification" content="8YLDmxMC7s8X3KGW46vJXZ9FbB6gzJnDIoJ-WQh0NoY" />
+    <meta name="yandex-verification" content="03b232a04b10eeab" />
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XPBE4YXCX0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-XPBE4YXCX0');
+</script>
+     
+     
+
+
+
+
+
+
+
+
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="Mount Everest Summit - News, Weather, Expeditions & Climbing Guides">
+    <meta property="og:description" content="Stay updated with Mount Everest news, weather updates, expedition tips, climbing guides, and high-altitude mountaineering insights.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.mounteverest-summit.com/">
+    <meta property="og:image" content="{% static 'images/Mount Everest.png' %}">
+    <meta property="og:site_name" content="Mount Everest Summit">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mount Everest Summit - News, Weather, Expeditions & Climbing Guides">
+    <meta name="twitter:description" content="Explore Mount Everest news, weather updates, expedition tips, climbing guides, trekking, and mountaineering insights.">
+    <meta name="twitter:image" content="{% static 'images/Mount Everest.png' %}">
+    <meta name="twitter:site" content="@MountEverestSummit">
+
+    <!-- Social Media Links for SEO -->
+    <link rel="me" href="https://wa.me/9705970563">
+    <link rel="me" href="https://www.facebook.com/share/1CRDtdtMGS/">
+    <link rel="me" href="https://www.x.com/gautamjha136139?s=11">
+    <link rel="me" href="https://www.instagram.com/mounteverest.summit/">
+    <link rel="me" href="https://www.tiktok.com/@mt.everestsummit?_t=ZS-90Vd9BuardF&amp;_r=1">
+    <link rel="me" href="https://www.youtube.com/@mounteverestsummit">
+    <link rel="me" href="https://www.linkedin.com/company/mount-everest-summit/">
+
+    <!-- Favicon -->
+<link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+
+    
+<!-- ✅ JSON-LD Structured Data for Google Rich Results -->
+<!-- Organization Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Mount Everest Summit",
+  "url": "https://www.mounteverest-summit.com/",
+  "logo": "https://www.mounteverest-summit.com{% static 'images/Mount Everest.png' %}",
+  "sameAs": [
+    "https://wa.me/9705970563",
+    "https://www.facebook.com/share/1CRDtdtMGS/",
+    "https://x.com/gautamjha136139?s=11",
+    "https://www.instagram.com/mounteverest.summit/",
+    "https://www.tiktok.com/@mt.everestsummit?_t=ZS-90Vd9BuardF&_r=1",
+    "https://www.youtube.com/@mounteverestsummit",
+    "https://www.linkedin.com/company/mount-everest-summit/"
+  ]
+}
+</script>
+
+<!-- WebSite Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Mount Everest Summit",
+  "url": "https://www.mounteverest-summit.com/",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://www.mounteverest-summit.com/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+<!-- Local Business / Travel Agency Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TravelAgency",
+  "name": "Mount Everest Summit",
+  "image": "https://www.mounteverest-summit.com{% static 'images/Mount Everest.png' %}",
+  "url": "https://www.mounteverest-summit.com/",
+  "telephone": "+9779705970563",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Kathmandu, Nepal",
+    "addressLocality": "Kathmandu",
+    "addressCountry": "NP"
+  },
+  "sameAs": [
+    "https://wa.me/9705970563",
+    "https://www.instagram.com/mounteverest.summit/",
+    "https://www.linkedin.com/company/mount-everest-summit/"
+  ]
+}
+</script>
+
+<!-- 🟦 Wikidata JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "NewsMediaOrganization",
+      "name": "Mount Everest Summit",
+      "alternateName": "THE WORLD’S HIGHEST NEWS ROOM",
+      "url": "https://mounteverest-summit.com",
+      "logo": "https://mounteverest-summit.com/static/images/logo.png",
+      "sameAs": [
+        "https://www.wikidata.org/wiki/Q136698656",
+        "https://w.wiki/FvVc",
+       "https://wa.me/9705970563",
+    "https://www.facebook.com/share/1CRDtdtMGS/",
+    "https://x.com/gautamjha136139?s=11",
+    "https://www.instagram.com/mounteverest.summit/",
+    "https://www.tiktok.com/@mt.everestsummit?_t=ZS-90Vd9BuardF&_r=1",
+    "https://www.youtube.com/@mounteverestsummit",
+    "https://www.linkedin.com/company/mount-everest-summit/"
+      ],
+      "description": "Mount Everest Summit – news, expeditions & guides covering Mount Everest, its North and South routes, weather updates and climbing insights.",
+      "foundingDate": "2024",
+      "location": {
+        "@type": "Place",
+        "name": "Kathmandu, Bagmati Province, Nepal",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kathmandu",
+          "addressRegion": "Bagmati Province",
+          "addressCountry": "NP"
+        }
+      }
+    }
+  ]
+}
+</script>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XPBE4YXCX0"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-XPBE4YXCX0');
+    </script>
+</head>
+
+<body class="w-full m-0 p-0">
+    {% include 'includes/header.html' %}
+   
+    <main class="w-full flex-grow pt-[70px] md:pt-[130px]">
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    {% include 'includes/footer.html' %}
+
+    {% include 'chat.html' %}
+    {% include 'email-newsletter.html' %}
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

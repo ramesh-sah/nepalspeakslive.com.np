@@ -1,0 +1,893 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<main class="w-full bg-[#FFFFFF] mx-auto py-2 overflow-hidden px-0">
+
+
+<section class="mb-12 px-4 sm:px-6 lg:px-8">
+    <h2 class="text-sm font-bold mb-4 border-b pb-2">News</h2>
+
+    <!-- Layout with 2 items in first row and 3 items in second -->
+    <div class="grid gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {% for news_item in latest|slice:":2" %}
+            <a href="{% if news_item.slug %}{% url 'news-detail' news_item.slug %}{% else %}#{% endif %}" 
+               class="group relative flex flex-col h-72 sm:h-80 md:h-96 overflow-hidden rounded-lg bg-gray-100 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <article class="flex flex-col h-full overflow-hidden rounded transition-transform duration-300 hover:scale-[1.02]">
+                    <!-- Image -->
+                    <div class="w-full flex-1 bg-gray-100 overflow-hidden">
+                        {% if news_item.featured_image %}
+                        <img src="{{ news_item.featured_image.url }}" alt="{{ news_item.title }}"
+                             class="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105">
+                        {% endif %}
+                    </div>
+                    <!-- Text Content -->
+                    <div class="px-4 py-3 bg-white flex flex-col">
+                        <div class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                            <span>{{ news_item.category.name }}</span>
+                            <time datetime="{{ news_item.published_date|date:'Y-m-d' }}">
+                                {{ news_item.published_date|date:"M d, Y" }}
+                            </time>
+                        </div>
+                        <h3 class="text-sm font-semibold leading-snug text-black mb-1 line-clamp-2">
+                            {{ news_item.title }}
+                        </h3>
+                        <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                            {{ news_item.summary|default:"" }}
+                        </p>
+                        <span class="text-sm font-medium text-black underline group-hover:text-gray-800">
+                            Read full story →
+                        </span>
+                    </div>
+                </article>
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- Second Row: 3 Columns -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for news_item in latest|slice:"2:5" %}
+            <a href="{% if news_item.slug %}{% url 'news-detail' news_item.slug %}{% else %}#{% endif %}" 
+               class="group relative flex flex-col h-64 sm:h-72 overflow-hidden rounded-lg bg-gray-100 shadow-md hover:shadow-lg transition-shadow duration-300">
+                <article class="flex flex-col h-full overflow-hidden rounded transition-transform duration-300 hover:scale-[1.02]">
+                    <!-- Image -->
+                    <div class="w-full flex-1 bg-gray-100 overflow-hidden">
+                        {% if news_item.featured_image %}
+                        <img src="{{ news_item.featured_image.url }}" alt="{{ news_item.title }}"
+                             class="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105">
+                        {% endif %}
+                    </div>
+                    <!-- Text Content -->
+                    <div class="px-4 py-3 bg-white flex flex-col">
+                        <div class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                            <span>{{ news_item.category.name }}</span>
+                            <time datetime="{{ news_item.published_date|date:'Y-m-d' }}">
+                                {{ news_item.published_date|date:"M d, Y" }}
+                            </time>
+                        </div>
+                        <h3 class="text-sm font-semibold leading-snug text-black mb-1 line-clamp-2">
+                            {{ news_item.title }}
+                        </h3>
+                        <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                            {{ news_item.summary|default:"" }}
+                        </p>
+                        <span class="text-sm font-medium text-black underline group-hover:text-gray-800">
+                            Read full story →
+                        </span>
+                    </div>
+                </article>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+  <!-- Section 3: Live News Video -->
+<section class="mb-12">
+    <!-- Section Header with Live Red Badge -->
+    <div class="flex items-center mb-6 border-b border-gray-200 pb-3">
+        <div class="flex items-center space-x-3">
+            <!-- Live Red Badge -->
+            <!-- <div class="flex items-center space-x-2 bg-red-600 text-white px-3 py-1 rounded-full">
+                <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                <span class="text-xs font-bold uppercase tracking-wider font-roboto">LIVE</span>
+            </div>
+            <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider font-roboto">Breaking News</h2> -->
+        </div>
+    </div>
+
+<a href="{% if live_news.news.slug %}{% url 'news-detail' live_news.news.slug %}{% else %}#{% endif %}" class="block group">
+    <article class="bg-white border border-gray-100 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-red-50">
+        <!-- Video Container with Fixed Height -->
+        <div class="relative w-full h-120 bg-black overflow-hidden">
+            {% if live_news.video %}
+            <video 
+                class="w-full h-full object-cover video-player"
+                controls
+                controlsList="nodownload"
+                poster="{% if live_news.news.featured_image %}{{ live_news.news.featured_image.url }}{% endif %}"
+                autoplay
+                muted
+                loop
+                playsinline
+            >
+                <source src="{{ live_news.video.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            {% elif live_news.news.featured_image %}
+            <img src="{{ live_news.news.featured_image.url }}" alt="{{ live_news.caption }}"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            {% else %}
+            <div class="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                <svg class="w-16 h-16 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+            </div>
+            {% endif %}
+            
+            <!-- Live Red Overlay -->
+            <div class="absolute top-4 left-4 z-20">
+                <div class="flex items-center space-x-2 bg-red-600 text-white px-3 py-1.5 rounded-full shadow-lg">
+                    <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                    <span class="text-xs font-bold uppercase tracking-wider font-roboto">LIVE NOW</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6">
+            <!-- Meta Information -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs text-gray-500 mb-4 font-roboto space-y-2 sm:space-y-0">
+                <div class="flex items-center space-x-3">
+                    <span class="font-semibold text-red-600 bg-red-50 px-3 py-1 rounded-full text-xs">
+                        {{ live_news.news.category.name|default:"BREAKING"|upper }}
+                    </span>
+                    <span class="text-gray-300 hidden sm:block">•</span>
+                    <span class="text-gray-600 text-xs">
+                        {% if live_news and live_news.created_by %}
+        By {{ live_news.created_by.get_full_name|default:live_news.created_by.username }}
+    {% else %}
+        By Unknown
+    {% endif %}
+
+                    </span>
+                </div>
+                <time datetime="{{ live_news.created_at|date:'Y-m-d' }}" class="text-gray-500 text-xs font-medium">
+                    {{ live_news.created_at|date:"M j, Y • g:i A" }}
+                </time>
+            </div>
+
+            <!-- Headline -->
+            <h3 class="text-xl font-bold leading-tight text-gray-900 mb-4 font-roboto group-hover:text-red-700 transition-colors duration-200 line-clamp-2">
+                {{ live_news.news.title }}
+            </h3>
+
+            <!-- Video Caption -->
+            {% if live_news.caption %}
+            <p class="text-sm text-gray-600 leading-relaxed mb-5 font-roboto line-clamp-3 border-l-3 border-red-500 pl-4 py-2 bg-red-50">
+                {{ live_news.caption }}
+            </p>
+            {% endif %}
+
+            <!-- Footer -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pt-4 border-t border-gray-100 space-y-3 sm:space-y-0">
+                <div class="flex items-center space-x-4 text-xs text-gray-500 font-roboto">
+                    <span class="flex items-center space-x-1">
+                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>Updated {{ live_news.updated_at|timesince }} ago</span>
+                    </span>
+                </div>
+                <span class="text-sm font-bold text-red-600 font-roboto group-hover:text-red-700 transition-colors flex items-center justify-center sm:justify-start">
+                    Watch Full Coverage
+                    <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
+                </span>
+            </div>
+        </div>
+    </article>
+</a>
+
+</section>
+
+   <!-- ✅ Swiper.js CSS -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+
+<!-- ✅ Latest News Section -->
+<section class="mb-12 bg-transparent px-4 sm:px-6 lg:px-8">
+  <h2 class="text-sm font-bold text-black mb-6 pb-2 border-b border-gray-200">
+    Latest News
+  </h2>
+
+  <!-- ✅ Swiper Container -->
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      {% for news in latest|slice:":10" %}
+      <div class="swiper-slide">
+        <a href="{% url 'news-detail' news.slug %}" class="block group">
+          <article
+            class="overflow-hidden rounded-lg bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+          >
+            <!-- Image -->
+            <div class="w-full h-48 sm:h-56 md:h-64 bg-gray-100 overflow-hidden">
+              {% if news.featured_image %}
+              <img
+                src="{{ news.featured_image.url }}"
+                alt="{{ news.title }}"
+                class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-in-out"
+              />
+              {% else %}
+              <div class="w-full h-full bg-gray-200"></div>
+              {% endif %}
+            </div>
+
+            <!-- Content -->
+            <div class="px-4 py-3">
+              <div
+                class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600 mb-2"
+              >
+                <span class="truncate">{{ news.category.name }}</span>
+                <time datetime="{{ news.published_date|date:'Y-m-d' }}">
+                  {{ news.published_date|date:"M d, Y" }}
+                </time>
+              </div>
+
+              <h3
+                class="text-sm font-semibold leading-snug text-black mb-1 line-clamp-2"
+              >
+                {{ news.title }}
+              </h3>
+
+              <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                {{ news.summary|default:"" }}
+              </p>
+
+              <span
+                class="text-sm font-medium text-red-600 underline group-hover:text-black"
+              >
+                Read full story →
+              </span>
+            </div>
+          </article>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- ✅ Navigation Buttons -->
+    <div
+      class="swiper-button-next !text-gray-800 hover:!text-black transition"
+    ></div>
+    <div
+      class="swiper-button-prev !text-gray-800 hover:!text-black transition"
+    ></div>
+
+    <!-- ✅ Pagination Dots -->
+    <div class="swiper-pagination !bottom-0 pt-10"></div>
+  </div>
+</section>
+
+<!-- ✅ Swiper.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  const swiper = new Swiper(".mySwiper", {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    loop: true,
+    grabCursor: true,
+    centeredSlides: false,
+    autoplay: {
+      delay: 3500,
+      disableOnInteraction: false,
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+      dynamicBullets: true,
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    breakpoints: {
+      640: { slidesPerView: 2 },
+      768: { slidesPerView: 3 },
+      1024: { slidesPerView: 4 },
+      1280: { slidesPerView: 5 },
+    },
+  });
+</script>
+
+
+
+ 
+    
+  
+
+
+<section class="mb-12 bg-transparent">
+    <h2 class="text-sm font-bold text-black mb-6 pb-2 border-b border-gray-200">
+        Trending News
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 xl:gap-8">
+        {% with items=trending|slice:":7" %}
+        <!-- Item 1 -->
+        <div>
+           <a href="{% if items.0 and items.0.slug %}{% url 'news-detail' items.0.slug %}{% else %}#{% endif %}" class="block">
+
+            <article class="overflow-hidden rounded transition-colors duration-150 hover:bg-gray-50">
+                <div class="w-full h-80 bg-gray-100 overflow-hidden">
+                    {% if items.0.featured_image %}
+                    <img src="{{ items.0.featured_image.url }}" alt="{{ items.0.title }}"
+                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
+                    {% else %}
+                    <div class="w-full h-full bg-gray-200"></div>
+                    {% endif %}
+                </div>
+                <div class="px-4 py-3 bg-white">
+                    <div class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                        <span>{{ items.0.category.name|default:"General" }}</span>
+                        <time datetime="{{ items.0.published_date|date:'Y-m-d'|default:'' }}">
+                            {{ items.0.published_date|date:"M d, Y"|default:"Coming soon" }}
+                        </time>
+                    </div>
+                    <h3 class="text-sm font-semibold leading-snug text-black mb-1 line-clamp-2">
+                        {{ items.0.title }}
+                    </h3>
+                    <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                        {{ items.0.summary|default:"" }}
+                    </p>
+                    <span class="text-sm font-medium text-black underline group-hover:text-gray-800">
+                        Read full story →
+                    </span>
+                </div>
+            </article>
+            </a>
+        </div>
+
+        <!-- Item 2 -->
+        <div>
+            <a href="{% if items.1 and items.1.slug %}{% url 'news-detail' items.1.slug %}{% else %}#{% endif %}" class="block">
+
+            <article class="overflow-hidden rounded transition-colors duration-150 hover:bg-gray-50">
+                <div class="w-full h-80 bg-gray-100 overflow-hidden">
+                    {% if items.1.featured_image %}
+                    <img src="{{ items.1.featured_image.url }}" alt="{{ items.1.title }}"
+                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
+                    {% else %}
+                    <div class="w-full h-full bg-gray-200"></div>
+                    {% endif %}
+                </div>
+                <div class="px-4 py-3 bg-white">
+                    <div class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                        <span>{{ items.1.category.name|default:"General" }}</span>
+                        <time datetime="{{ items.1.published_date|date:'Y-m-d'|default:'' }}">
+                            {{ items.1.published_date|date:"M d, Y"|default:"Coming soon" }}
+                        </time>
+                    </div>
+                    <h3 class="text-sm font-semibold leading-snug text-black mb-1 line-clamp-2">
+                        {{ items.1.title }}
+                    </h3>
+                    <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                        {{ items.1.summary|default:"" }}
+                    </p>
+                    <span class="text-sm font-medium text-black underline group-hover:text-gray-800">
+                        Read full story →
+                    </span>
+                </div>
+            </article>
+            </a>
+        </div>
+
+        <!-- Item 3 -->
+        <div>
+            <a href="{% if items.2 and items.2.slug %}{% url 'news-detail' items.2.slug %}{% else %}#{% endif %}" class="block">
+
+            <article class="overflow-hidden rounded transition-colors duration-150 hover:bg-gray-50">
+                <div class="w-full h-80 bg-gray-100 overflow-hidden">
+                    {% if items.2.featured_image %}
+                    <img src="{{ items.2.featured_image.url }}" alt="{{ items.2.title }}"
+                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
+                    {% else %}
+                    <div class="w-full h-full bg-gray-200"></div>
+                    {% endif %}
+                </div>
+                <div class="px-4 py-3 bg-white">
+                    <div class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                        <span>{{ items.2.category.name|default:"General" }}</span>
+                        <time datetime="{{ items.2.published_date|date:'Y-m-d'|default:'' }}">
+                            {{ items.2.published_date|date:"M d, Y"|default:"Coming soon" }}
+                        </time>
+                    </div>
+                    <h3 class="text-sm font-semibold leading-snug text-black mb-1 line-clamp-2">
+                        {{ items.2.title }}
+                    </h3>
+                    <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                        {{ items.2.summary|default:"" }}
+                    </p>
+                    <span class="text-sm font-medium text-black underline group-hover:text-gray-800">
+                        Read full story →
+                    </span>
+                </div>
+            </article>
+            </a>
+        </div>
+
+        <!-- Item 4 (col-span-2) -->
+        <div class="col-span-2">
+            <a href="{% if items.3 and items.3.slug %}{% url 'news-detail' items.3.slug %}{% else %}#{% endif %}" class="block">
+
+            <article class="overflow-hidden rounded transition-colors duration-150 hover:bg-gray-50">
+                <div class="w-full h-80 bg-gray-100 overflow-hidden">
+                    {% if items.3.featured_image %}
+                    <img src="{{ items.3.featured_image.url }}" alt="{{ items.3.title }}"
+                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
+                    {% else %}
+                    <div class="w-full h-full bg-gray-200"></div>
+                    {% endif %}
+                </div>
+                <div class="px-4 py-3 bg-white">
+                    <div class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                        <span>{{ items.3.category.name|default:"General" }}</span>
+                        <time datetime="{{ items.3.published_date|date:'Y-m-d'|default:'' }}">
+                            {{ items.3.published_date|date:"M d, Y"|default:"Coming soon" }}
+                        </time>
+                    </div>
+                    <h3 class="text-sm font-semibold leading-snug text-black mb-1 line-clamp-2">
+                        {{ items.3.title }}
+                    </h3>
+                    <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                        {{ items.3.summary|default:"" }}
+                    </p>
+                    <span class="text-sm font-medium text-black underline group-hover:text-gray-800">
+                        Read full story →
+                    </span>
+                </div>
+            </article>
+            </a>
+        </div>
+
+        <!-- Item 5 -->
+        <div>
+            <a href="{% if items.4 and items.4.slug %}{% url 'news-detail' items.4.slug %}{% else %}#{% endif %}" class="block">
+
+            <article class="overflow-hidden rounded transition-colors duration-150 hover:bg-gray-50">
+                <div class="w-full h-80 bg-gray-100 overflow-hidden">
+                    {% if items.4.featured_image %}
+                    <img src="{{ items.4.featured_image.url }}" alt="{{ items.4.title }}"
+                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
+                    {% else %}
+                    <div class="w-full h-full bg-gray-200"></div>
+                    {% endif %}
+                </div>
+                <div class="px-4 py-3 bg-white">
+                    <div class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                        <span>{{ items.4.category.name|default:"General" }}</span>
+                        <time datetime="{{ items.4.published_date|date:'Y-m-d'|default:'' }}">
+                            {{ items.4.published_date|date:"M d, Y"|default:"Coming soon" }}
+                        </time>
+                    </div>
+                    <h3 class="text-sm font-semibold leading-snug text-black mb-1 line-clamp-2">
+                        {{ items.4.title }}
+                    </h3>
+                    <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                        {{ items.4.summary|default:"" }}
+                    </p>
+                    <span class="text-sm font-medium text-black underline group-hover:text-gray-800">
+                        Read full story →
+                    </span>
+                </div>
+            </article>
+            </a>
+        </div>
+
+        <!-- Item 6 -->
+        <div>
+           <a href="{% if items.5 and items.5.slug %}{% url 'news-detail' items.5.slug %}{% else %}#{% endif %}" class="block">
+
+            <article class="overflow-hidden rounded transition-colors duration-150 hover:bg-gray-50">
+                <div class="w-full h-80 bg-gray-100 overflow-hidden">
+                    {% if items.5.featured_image %}
+                    <img src="{{ items.5.featured_image.url }}" alt="{{ items.5.title }}"
+                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
+                    {% else %}
+                    <div class="w-full h-full bg-gray-200"></div>
+                    {% endif %}
+                </div>
+                <div class="px-4 py-3 bg-white">
+                    <div class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                        <span>{{ items.5.category.name|default:"General" }}</span>
+                        <time datetime="{{ items.5.published_date|date:'Y-m-d'|default:'' }}">
+                            {{ items.5.published_date|date:"M d, Y"|default:"Coming soon" }}
+                        </time>
+                    </div>
+                    <h3 class="text-sm font-semibold leading-snug text-black mb-1 line-clamp-2">
+                        {{ items.5.title }}
+                    </h3>
+                    <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                        {{ items.5.summary|default:"" }}
+                    </p>
+                    <span class="text-sm font-medium text-black underline group-hover:text-gray-800">
+                        Read full story →
+                    </span>
+                </div>
+            </article>
+            </a>
+        </div>
+
+        <!-- Item 7 (col-span-2) -->
+        <div class="col-span-2">
+           <a href="{% if items.6 and items.6.slug %}{% url 'news-detail' items.6.slug %}{% else %}#{% endif %}" class="block">
+
+            <article class="overflow-hidden rounded transition-colors duration-150 hover:bg-gray-50">
+                <div class="w-full h-80 bg-gray-100 overflow-hidden">
+                    {% if items.6.featured_image %}
+                    <img src="{{ items.6.featured_image.url }}" alt="{{ items.6.title }}"
+                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
+                    {% else %}
+                    <div class="w-full h-full bg-gray-200"></div>
+                    {% endif %}
+                </div>
+                <div class="px-4 py-3 bg-white">
+                    <div class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                        <span>{{ items.6.category.name|default:"General" }}</span>
+                        <time datetime="{{ items.6.published_date|date:'Y-m-d'|default:'' }}">
+                            {{ items.6.published_date|date:"M d, Y"|default:"Coming soon" }}
+                        </time>
+                    </div>
+                    <h3 class="text-sm font-semibold leading-snug text-black mb-1 line-clamp-2">
+                        {{ items.6.title }}
+                    </h3>
+                    <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                        {{ items.6.summary|default:"" }}
+                    </p>
+                    <span class="text-sm font-medium text-black underline group-hover:text-gray-800">
+                        Read full story →
+                    </span>
+                </div>
+            </article>
+            </a>
+        </div>
+        {% endwith %}
+    </div>
+</section>
+
+    <section class="mb-12 bg-transparent">
+        <h2 class="text-sm font-bold text-black mb-6 pb-2 border-b border-gray-200">
+            Exclusive News
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+            {% for news in exclusive %}
+            <a href="{% url 'news-detail' news.slug %}" class="block group">
+                <article class="overflow-hidden rounded transition-colors duration-15 hover:bg-gray-50">
+                    <div class="w-full h-40 bg-gray-100 overflow-hidden">
+                        {% if news.featured_image %}
+                        <img src="{{ news.featured_image.url }}" alt="{{ news.title }}"
+                            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out">
+                        {% else %}
+                        <div class="w-full h-full bg-gray-200"></div>
+                        {% endif %}
+                    </div>
+                    <div class="px-4 py-3">
+                        <div class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                            <span>{{ news.category.name }}</span>
+                            <time datetime="{{ news.published_date|date:'Y-m-d' }}">
+                                {{ news.published_date|date:"M d, Y" }}
+                            </time>
+                        </div>
+                        <h3 class="text-sm font-semibold leading-snug text-black mb-1 line-clamp-2">
+                            {{ news.title }}
+                        </h3>
+                        <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                            {{ news.summary|default:"" }}
+                        </p>
+                        <span class="text-sm font-medium text-black underline group-hover:text-gray-800">
+                            Read full story →
+                        </span>
+                    </div>
+                </article>
+            </a>
+            {% endfor %}
+    
+    
+            <!-- Add more cards up to 5 -->
+        </div>
+    </section>
+
+
+
+
+   
+    
+
+    <section class="mb-12">
+        <!-- Section header -->
+        <h2 class="text-sm font-bold mb-4 border-b border-gray-200 pb-2">
+            Top Combined News
+        </h2>
+    
+        <div class="space-y-10">
+            {% with top_combined|slice:":4" as top_news %}
+            <!-- Row 1: two analysis cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Card 1 -->
+                <a href="{% if top_news.0 and top_news.0.slug %}{% url 'news-detail' top_news.0.slug %}{% else %}#{% endif %}" class="group block">
+
+                    <article class="rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-150">
+                        <div class="w-full h-80 bg-gray-100 overflow-hidden">
+                            {% if top_news.0.featured_image %}
+                            <img src="{{ top_news.0.featured_image.url }}" alt="{{ top_news.0.title }}"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            {% else %}
+                            <div class="w-full h-full bg-gray-200"></div>
+                            {% endif %}
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                                <span>{{ top_news.0.category.name|default:"General" }}</span>
+                                <time datetime="{{ top_news.0.published_date|date:'Y-m-d' }}">
+                                    {{ top_news.0.published_date|date:"M d, Y" }}
+                                </time>
+                            </div>
+                            <h3 class="text-sm font-semibold text-black leading-snug mb-2 line-clamp-2">
+                                {{ top_news.0.title }}
+                            </h3>
+                            <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                                {{ top_news.0.summary|default:"" }}
+                            </p>
+                            <span class="text-sm font-medium text-black underline">
+                                Read full story →
+                            </span>
+                        </div>
+                    </article>
+                </a>
+    
+                <!-- Card 2 -->
+                <a href="{% if top_news.1 and top_news.1.slug %}{% url 'news-detail' top_news.1.slug %}{% else %}#{% endif %}" class="group block">
+
+                    <article class="rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-150">
+                        <div class="w-full h-80 bg-gray-100 overflow-hidden">
+                            {% if top_news.1.featured_image %}
+                            <img src="{{ top_news.1.featured_image.url }}" alt="{{ top_news.1.title }}"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            {% else %}
+                            <div class="w-full h-full bg-gray-200"></div>
+                            {% endif %}
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                                <span>{{ top_news.1.category.name|default:"General" }}</span>
+                                <time datetime="{{ top_news.1.published_date|date:'Y-m-d' }}">
+                                    {{ top_news.1.published_date|date:"M d, Y" }}
+                                </time>
+                            </div>
+                            <h3 class="text-sm font-semibold text-black leading-snug mb-2 line-clamp-2">
+                                {{ top_news.1.title }}
+                            </h3>
+                            <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                                {{ top_news.1.summary|default:"" }}
+                            </p>
+                            <span class="text-sm font-medium text-black underline">
+                                Read full story →
+                            </span>
+                        </div>
+                    </article>
+                </a>
+            </div>
+    
+            <!-- Row 2: one analysis card + one accented pair -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Card 3 -->
+                <a href="{% if top_news.2 and top_news.2.slug %}{% url 'news-detail' top_news.2.slug %}{% else %}#{% endif %}" class="group block">
+
+                    <article class="rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-150">
+                        <div class="w-full h-80 bg-gray-100 overflow-hidden">
+                            {% if top_news.2.featured_image %}
+                            <img src="{{ top_news.2.featured_image.url }}" alt="{{ top_news.2.title }}"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            {% else %}
+                            <div class="w-full h-full bg-gray-200"></div>
+                            {% endif %}
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                                <span>{{ top_news.2.category.name|default:"General" }}</span>
+                                <time datetime="{{ top_news.2.published_date|date:'Y-m-d' }}">
+                                    {{ top_news.2.published_date|date:"M d, Y" }}
+                                </time>
+                            </div>
+                            <h3 class="text-sm font-semibold text-black leading-snug mb-2 line-clamp-2">
+                                {{ top_news.2.title }}
+                            </h3>
+                            <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                                {{ top_news.2.summary|default:"" }}
+                            </p>
+                            <span class="text-sm font-medium text-black underline">
+                                Read full story →
+                            </span>
+                        </div>
+                    </article>
+                </a>
+    
+                <!-- Card 4 -->
+                <div class="space-y-6">
+                    <a href="{% if top_news.3 and top_news.3.slug %}{% url 'news-detail' top_news.3.slug %}{% else %}#{% endif %}" class="group block">
+
+                        <article
+                            class="rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-150 border-l-4">
+                            <div class="w-full h-80 bg-gray-100 overflow-hidden">
+                                {% if top_news.3.featured_image %}
+                                <img src="{{ top_news.3.featured_image.url }}" alt="{{ top_news.3.title }}"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                {% else %}
+                                <div class="w-full h-full bg-gray-200"></div>
+                                {% endif %}
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between text-xs uppercase tracking-wide text-gray-600 mb-2">
+                                    <span>{{ top_news.3.category.name|default:"General" }}</span>
+                                    <time datetime="{{ top_news.3.published_date|date:'Y-m-d' }}">
+                                        {{ top_news.3.published_date|date:"M d, Y" }}
+                                    </time>
+                                </div>
+                                <h3 class="text-sm font-semibold text-black leading-snug mb-2 line-clamp-2">
+                                    {{ top_news.3.title }}
+                                </h3>
+                                <p class="text-sm text-gray-700 line-clamp-3 mb-3">
+                                    {{ top_news.3.summary|default:"" }}
+                                </p>
+                                <span class="text-sm font-medium text-black underline">
+                                    Read full story →
+                                </span>
+                            </div>
+                        </article>
+                    </a>
+                </div>
+            </div>
+            {% endwith %}
+        </div>
+    </section>
+
+
+   
+
+
+    
+
+
+  
+
+</main>
+
+
+
+
+{% load static %}
+<!-- Mount Everest North Section -->
+<section id="mount-everest-north" class="py-1 bg-[#FFFFFF]>
+    <div class="w-full max-w-full mx-auto px-2">
+        <div class="mb-8 text-left text-sm font-bold mb-4 border-b border-gray-200 pb-2">
+            <span class="text-sm font-semibold tracking-widest text-black uppercase">
+                The Northern Face
+            </span>
+            <h2 class="mt-4 text-sm md:text-sm font-bold text-black">
+                Mount Everest North
+            </h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <!-- Video Column -->
+            <div>
+                <img
+                    src="{% static 'images/fa_everestn2018_7-960x675-1-700x492-1-1.jpg' %}"  alt="Mount Everest North"
+                  
+                    class="w-full rounded-lg shadow-lg h-80 object-cover"/>
+                
+            </div>
+
+            <!-- Text Column -->
+            <div>
+                <p class="text-black text-md font-light mb-4">
+    The northern face of Everest, rising majestically above Tibet, offers breathtaking vistas and
+    challenging climbing routes. Known as <span class="font-semibold">Chomolungma</span> in Tibetan, it
+    symbolizes the "Goddess Mother of the World" and stands as a testament to the mountain's enduring
+    mystique.
+</p>
+<p class="text-black text-md font-light mb-4">
+    The region is renowned for its rugged beauty and unpredictable weather patterns, making every
+    expedition a unique adventure. From the North Col to the famed Hornbein Couloir, each route promises
+    an unforgettable encounter with nature's raw power.
+</p>
+<p class="text-black text-md font-light mb-4">
+    Climbers often encounter dramatic icefalls, sheer cliffs, and narrow ridges, testing both skill and
+    endurance. The northern approach, while less crowded than the southern routes, presents its own set of
+    logistical and technical challenges.
+</p>
+
+
+
+
+                <div class="text-center mt-3">
+                    <a href="{% url 'mount-everest-north' %}"
+                       class="text-sm inline-block bg-black text-white px-6 py-3 rounded-md transition-colors duration-300 hover:bg-dark-200">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Mount Everest South Section -->
+<section id="mount-everest-south" class="py-10 bg-[#FFFFFF]">
+    <div class="w-full max-w-full mx-auto px-0">
+        <div class="mb-8 text-left text-sm font-bold mb-4 border-b border-gray-200 pb-2">
+            <span class="text-sm font-semibold tracking-widest text-black uppercase">
+                The Sourthern Face
+            </span>
+            <h2 class="mt-4 text-sm md:text-sm font-bold text-black">
+                Mount Everest South
+            </h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <!-- Text Column -->
+            <div>
+                <p class="text-black text-md mb-0">
+    The southern face of Mount Everest, located in Nepal, is home to the famous Khumbu Icefall and South
+    Col. Known as <span class="font-semibold">Sagarmatha</span> in Nepali, this majestic face holds deep
+    cultural significance and has captivated adventurers and climbers from around the globe.
+</p>
+<p class="text-black text-md mb-0">
+    Beyond its challenging climbing routes, the region offers an immersive experience into the rich
+    traditions of the local Sherpa community and the vibrant atmosphere at base camp. Every expedition
+    here is an opportunity to embrace the awe-inspiring natural beauty and timeless spirit of the
+    Himalayas.
+</p>
+<p class="text-black text-md mb-0">
+    From the serene trails of the Khumbu Valley to the breathtaking sunrise views over the Himalayan peaks,
+    each journey toward Everest is not only a physical challenge but also a spiritual awakening. The
+    mountain stands as a symbol of resilience, unity, and humanity’s enduring quest for exploration.
+</p>
+
+                <div class="text-center mt-3">
+                    <a href="{% url 'mount-everest-south' %}"
+                       class="text-sm inline-block bg-black text-white px-6 py-3 rounded-md transition-colors duration-300 hover:bg-dark-200">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+
+            <!-- Video Column (same as North) -->
+            <div>
+                <img
+                    src="{% static 'images/ne1-ezgif.com-webp-to-jpg-converter.webp' %}"
+                    alt="Mount Everest South"
+                    
+                    class="w-full rounded-lg shadow-lg h-80 object-cover"/>
+            
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

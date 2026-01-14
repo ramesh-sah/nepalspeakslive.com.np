@@ -1,0 +1,507 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mount Everest Weather </title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Alpine.js for interactivity -->
+    <script src="//unpkg.com/alpinejs" defer></script>
+    
+    <!-- Custom CSS for additional styling -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .temperature-gradient {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .pulse-dot {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .wind-direction {
+            transition: transform 0.5s ease;
+        }
+        
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loading-spinner {
+            border: 5px solid #f3f4f6;
+            border-top: 5px solid #3b82f6;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .map-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .map-hover:hover {
+            transform: scale(1.03);
+        }
+        
+        .elevation-gradient {
+            background: linear-gradient(to bottom, #10b981, #047857);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .temperature-gradient {
+                font-size: 3.5rem !important;
+            }
+            
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .grid-cols-2 {
+                grid-template-columns: repeat(1, minmax(0, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .grid-cols-3 {
+                grid-template-columns: repeat(1, minmax(0, 1fr));
+            }
+            
+            .grid-cols-6 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            
+            .flex-col-mobile {
+                flex-direction: column;
+            }
+            
+            .text-center-mobile {
+                text-align: center;
+            }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .grid-cols-6 {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 py-6" x-data="weatherDashboard()">
+        <!-- Header Section -->
+        <header class="gradient-bg text-white rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8 shadow-xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-blue-500 rounded-full -mr-12 sm:-mr-16 -mt-12 sm:-mt-16 opacity-20"></div>
+            <div class="absolute bottom-0 left-0 w-20 h-20 sm:w-24 sm:h-24 bg-indigo-500 rounded-full -ml-10 sm:-ml-12 -mb-10 sm:-mb-12 opacity-20"></div>
+            
+            <div class="relative z-10">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                    <div class="w-full md:w-auto text-center md:text-left mb-4 md:mb-0">
+                        <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Mount Everest Weather Dashboard</h1>
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 text-blue-100">
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-sm sm:text-base">{{ weather_data.location.name }}</span>
+                            </div>
+                            <span class="hidden sm:inline">•</span>
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5 9a7 7 0 0110 0v2.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 111.414-1.414L5 11.586V9z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-sm sm:text-base">{{ weather_data.location.elevation }}</span>
+                            </div>
+                            <span class="hidden sm:inline">•</span>
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z"></path>
+                                    <path d="M11 7a1 1 0 10-2 0v3a1 1 0 01-1 1H6a1 1 0 100 2h2a3 3 0 003-3V7z"></path>
+                                </svg>
+                                <span class="text-sm sm:text-base">{{ weather_data.location.region }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full md:w-auto mt-4 md:mt-0 flex items-center justify-center md:justify-end space-x-2 sm:space-x-4">
+                        <div class="bg-blue-500 bg-opacity-30 backdrop-blur-sm rounded-full px-3 py-1 sm:px-4 sm:py-2 flex items-center">
+                            <div class="pulse-dot w-2 h-2 sm:w-3 sm:h-3 bg-green-400 rounded-full mr-1 sm:mr-2"></div>
+                            <span class="text-xs sm:text-sm">Auto-refresh: <span x-text="autoRefreshEnabled ? 'ON' : 'OFF'"></span></span>
+                        </div>
+                        <div class="bg-amber-500 text-white rounded-full px-3 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm">
+                            Updated: {{ weather_data.last_updated }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+            <!-- Current Conditions Card -->
+            <div class="lg:col-span-2 bg-white rounded-2xl p-4 sm:p-6 shadow-lg card-hover">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6">
+                    <h2 class="text-lg sm:text-xl font-bold text-gray-800 mb-2 sm:mb-0">Current Conditions</h2>
+                    <div class="flex items-center text-xs sm:text-sm text-gray-500">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path>
+                        </svg>
+                        Real-time Data
+                    </div>
+                </div>
+                
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="text-center md:text-left mb-4 md:mb-0">
+                        <div class="temperature-gradient text-5xl sm:text-6xl md:text-7xl font-bold mb-2">
+                            {{ weather_data.current_conditions.temperature }}
+                        </div>
+                        <div class="text-lg sm:text-xl text-gray-600 mb-4">
+                            {{ weather_data.current_conditions.conditions }}
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3 sm:gap-4 w-full md:w-auto">
+                        <div class="bg-blue-50 rounded-xl p-3 sm:p-4 text-center">
+                            <div class="text-xl sm:text-2xl font-bold text-blue-700 mb-1">
+                                {{ weather_data.current_conditions.wind_speed }}
+                            </div>
+                            <div class="text-xs sm:text-sm text-gray-600">Wind Speed</div>
+                        </div>
+                        <div class="bg-indigo-50 rounded-xl p-3 sm:p-4 text-center">
+                            <div class="text-xl sm:text-2xl font-bold text-indigo-700 mb-1 flex items-center justify-center">
+                                {{ weather_data.current_conditions.wind_direction }}
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6 ml-1 wind-direction" style="transform: rotate({{ weather_data.current_conditions.wind_direction_degrees }}deg);" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="text-xs sm:text-sm text-gray-600">Wind Direction</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Temperature Chart -->
+                <div class="mt-6 sm:mt-8">
+                    <h3 class="text-base sm:text-lg font-semibold mb-3 sm:mb-4">24-Hour Temperature Trend</h3>
+                    <div class="h-40 sm:h-48">
+                        <canvas id="temperatureChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Weather Summary Card -->
+            <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-lg card-hover">
+                <h2 class="text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6">Weather Summary</h2>
+                
+                <div class="space-y-3 sm:space-y-4">
+                    {% for summary in weather_data.forecast_summary %}
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-3 sm:p-4 border-l-4 border-blue-500">
+                        <div class="font-semibold text-blue-700 mb-1 text-sm sm:text-base">{{ summary.period }}</div>
+                        <div class="text-gray-700 text-xs sm:text-sm">{{ summary.description }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Detailed Forecast -->
+        <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-lg mb-6 sm:mb-8 card-hover ">
+            <h2 class="text-lg  sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6 ">6-Day Forecast</h2>
+            
+            <div class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+                {% for day in weather_data.detailed_forecast %}
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-3 sm:p-4 text-center transition-all duration-300 hover:shadow-md">
+                    <div class="font-bold text-blue-800 text-sm sm:text-base">{{ day.day }}</div>
+                    <div class="text-xs text-gray-600 mb-2 sm:mb-3">{{ day.date }}</div>
+                    
+                    <div class="flex justify-center space-x-3 sm:space-x-4 mb-2 sm:mb-3">
+                        <div>
+                            <div class="text-red-500 font-bold text-sm sm:text-base">{{ day.max_temp }}</div>
+                            <div class="text-xs text-gray-500">High</div>
+                        </div>
+                        <div>
+                            <div class="text-blue-500 font-bold text-sm sm:text-base">{{ day.min_temp }}</div>
+                            <div class="text-xs text-gray-500">Low</div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-xs sm:text-sm text-gray-700 mb-2">
+                        Wind: {{ day.wind_speed }}
+                    </div>
+                    
+                    <div class="mt-2">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 mx-auto bg-blue-100 rounded-full flex items-center justify-center">
+                            <!-- Weather icon would go here -->
+                            <svg class="w-4 h-4 sm:w-6 sm:h-6 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M5 3a1 1 0 000 2c5.523 0 10 4.477 10 10a1 1 0 102 0C17 8.373 11.627 3 5 3z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+        </div>
+        
+            <!-- Forecast Chart -->
+              <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-lg mb-6 sm:mb-8 card-hover ">
+
+
+                <div class="mt-10 sm:mt-8">
+                <h3 class="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Temperature Forecast</h3>
+                <div class="h-48 sm:h-64">
+                    <canvas id="forecastChart"></canvas>
+                </div>
+            </div>
+              </div>
+            
+    
+        <!-- Control Panel -->
+        <!-- <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-lg">
+            <h2 class="text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6">Dashboard Controls</h2>
+            
+            <div class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+                <div class="flex flex-col xs:flex-row items-center space-y-3 xs:space-y-0 xs:space-x-3 sm:space-x-4 w-full xs:w-auto">
+                    <button @click="refreshData()" :disabled="isRefreshing" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed w-full xs:w-auto">
+                        <svg x-show="!isRefreshing" class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
+                        </svg>
+                        <svg x-show="isRefreshing" class="animate-spin w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-sm sm:text-base" x-text="isRefreshing ? 'Refreshing...' : 'Refresh Data Now'"></span>
+                    </button>
+                    
+                    <button @click="toggleAutoRefresh()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center w-full xs:w-auto">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-sm sm:text-base" x-text="autoRefreshEnabled ? 'Pause Auto-Refresh' : 'Resume Auto-Refresh'"></span>
+                    </button>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4 text-xs sm:text-sm text-gray-600 mt-4 sm:mt-0">
+                    <div class="flex items-center">
+                        <div class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-green-400 mr-1 sm:mr-2"></div>
+                        <span>Auto-refresh: <span x-text="autoRefreshEnabled ? 'ON' : 'OFF'"></span></span>
+                    </div>
+                    <div>Next update in: <span x-text="countdown"></span>s</div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+
+    <script>
+        // Initialize Alpine.js component
+        function weatherDashboard() {
+            return {
+                autoRefreshEnabled: true,
+                isRefreshing: false,
+                countdown: 120,
+                refreshTimer: null,
+                countdownTimer: null,
+                
+                init() {
+                    this.startAutoRefresh();
+                    this.initializeCharts();
+                },
+                
+                startAutoRefresh() {
+                    if (this.autoRefreshEnabled) {
+                        this.countdown = 120;
+                        this.startCountdown();
+                        
+                        this.refreshTimer = setTimeout(() => {
+                            this.refreshData();
+                        }, 120000); // 2 minutes
+                    }
+                },
+                
+                startCountdown() {
+                    this.countdownTimer = setInterval(() => {
+                        if (this.countdown > 0) {
+                            this.countdown--;
+                        } else {
+                            clearInterval(this.countdownTimer);
+                        }
+                    }, 1000);
+                },
+                
+                toggleAutoRefresh() {
+                    this.autoRefreshEnabled = !this.autoRefreshEnabled;
+                    
+                    if (this.autoRefreshEnabled) {
+                        this.startAutoRefresh();
+                    } else {
+                        clearTimeout(this.refreshTimer);
+                        clearInterval(this.countdownTimer);
+                        this.countdown = 0;
+                    }
+                },
+                
+                refreshData() {
+                    this.isRefreshing = true;
+                    document.getElementById('loadingOverlay').style.display = 'flex';
+                    
+                    // Simulate API call
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                },
+                
+                initializeCharts() {
+                    // Temperature Chart
+                    const tempCtx = document.getElementById('temperatureChart').getContext('2d');
+                    const tempChart = new Chart(tempCtx, {
+                        type: 'line',
+                        data: {
+                            labels: ['12AM', '3AM', '6AM', '9AM', '12PM', '3PM', '6PM', '9PM'],
+                            datasets: [{
+                                label: 'Temperature (°C)',
+                                data: [-15, -18, -20, -12, -5, -3, -8, -12],
+                                borderColor: '#3b82f6',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: false,
+                                    grid: {
+                                        color: 'rgba(0, 0, 0, 0.05)'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    
+                    // Forecast Chart
+                    const forecastCtx = document.getElementById('forecastChart').getContext('2d');
+                    const forecastChart = new Chart(forecastCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Today', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                            datasets: [
+                                {
+                                    label: 'Max Temp',
+                                    data: [-5, -3, -7, -4, -2, -1],
+                                    backgroundColor: '#ef4444',
+                                    borderRadius: 4
+                                },
+                                {
+                                    label: 'Min Temp',
+                                    data: [-15, -12, -18, -14, -10, -8],
+                                    backgroundColor: '#3b82f6',
+                                    borderRadius: 4
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: false,
+                                    grid: {
+                                        color: 'rgba(0, 0, 0, 0.05)'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        }
+        
+        // Handle page visibility changes
+        document.addEventListener('visibilitychange', function() {
+            const dashboard = document.querySelector('[x-data]').__x.$data;
+            
+            if (document.hidden) {
+                clearTimeout(dashboard.refreshTimer);
+                clearInterval(dashboard.countdownTimer);
+            } else if (dashboard.autoRefreshEnabled) {
+                dashboard.startAutoRefresh();
+            }
+        });
+    </script>
+</body>
+</html>
+{% endblock %}
