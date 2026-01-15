@@ -262,9 +262,9 @@ CKEDITOR_IMAGE_BACKEND = "pillow"
 
 JAZZMIN_SETTINGS = {
     # ---------- Branding ----------
-    "site_title": "Everest Summit",
-    "site_header": "Everest Summit Admin",
-    "site_brand": "Everest Summit",
+    "site_title": "Nepal Speaks Live",
+    "site_header": "NSL Admin",
+    "site_brand": "Nepal Speaks Live",
 
     # No logo images — text only
     "login_logo": "images/mount_everest_summit_logo_width.png",
@@ -273,8 +273,8 @@ JAZZMIN_SETTINGS = {
     "site_logo_classes": "fw-bold text-primary fs-4",  # styled text as logo
     "site_icon": "images/favicon.ico",
 
-    "welcome_sign": "Welcome to Everest Summit Admin Portal",
-    "copyright": "© 2025 Everest Summit Pvt. Ltd.",
+    "welcome_sign": "Welcome to Nepal Speaks Live Admin Portal",
+    "copyright": "© 2025 Nepal Speaks Live Pvt. Ltd.",
     "user_avatar": None,
 
     # ---------- Top Menu ----------
@@ -430,8 +430,7 @@ SITE_ALTERNATE_NAME = "THE WORLD’S HIGHEST NEWS ROOM"
 SITE_URL = "https://www.nepalspeakslive.com.np"
 SITE_LOGO = "https://mounteverest-summit.com/static/images/logo.png"
 SITE_DESCRIPTION = (
-    "Mount Everest Summit – news, expeditions & guides covering Mount Everest, "
-    "its North and South routes, weather updates and climbing insights."
+    "Nepal Speaks Live –  "
 )
 SITE_FOUNDING_DATE = "2025"
 
